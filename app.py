@@ -48,7 +48,7 @@ def login():
                 st.session_state.user_name = user_name
                 st.success("Login successful!")
                 st.experimental_rerun()  # To go straight to the main app
-            elif user_name = '' or not user_name:
+            elif user_name == '' or not user_name:
                 st.error("Please enter your Name")
             elif not secret_key:
                 st.error("Invalid Secret Key")
