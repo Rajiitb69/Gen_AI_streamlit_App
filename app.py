@@ -48,7 +48,7 @@ def login_screen():
             if secret_key == PASSWORD:
                 st.session_state.logged_in = True
                 st.session_state.user_name = user_name
-                st.success("Login successful!")
+                st.session_state.step = 'greeting'
                 st.rerun()  # To go straight to the main app
             elif user_name == '' or not user_name:
                 st.error("Please enter your Name")
