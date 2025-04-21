@@ -94,8 +94,8 @@ def main_app():
     user_name = st.session_state.user_name.title()
     # Set sidebar width using CSS
     st.markdown("""<style>
-                    [data-testid="stSidebar"] {width: 250px;}
-                    [data-testid="stSidebar"] > div:first-child { width: 250px;}
+                    [data-testid="stSidebar"] {width: 110px;}
+                    [data-testid="stSidebar"] > div:first-child { width: 110px;}
                 </style>""", unsafe_allow_html=True)
     
     # Sidebar logout
