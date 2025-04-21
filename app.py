@@ -67,14 +67,15 @@ def main_app(user_name):
     groq_api_key = st.sidebar.text_input("Enter your Groq API Key:",type="password")
     
     query = st.chat_input(placeholder="Write your query?")
+
+    if "messages" not in st.session_state:
+        st.session_state["messages"]=[
+            {"role": "assistant", "content": f"Hi {user_name.title()}, I'm a code assistant. How can I help you?"}
+        ]
+    for msg in st.session_state.messages:
+        st.chat_message(msg["role"]).write(msg['content'])
     
     if user_name!='' and groq_api_key and query:
-        if "messages" not in st.session_state:
-            st.session_state["messages"]=[
-                {"role": "assistant", "content": f"Hi {user_name.title()}, I'm a code assistant. How can I help you?"}
-            ]
-        for msg in st.session_state.messages:
-            st.chat_message(msg["role"]).write(msg['content'])
             
         st.session_state.messages.append({"role": "user", "content": query})
         st.chat_message("user").write(query)
@@ -112,12 +113,6 @@ def main_app(user_name):
             st.session_state.messages.append({'role': 'assistant', "content": final_answer})
             
     elif user_name!='' and groq_api_key and not query:
-        if "messages" not in st.session_state:
-            st.session_state["messages"]=[
-                {"role": "assistant", "content": f"Hi {user_name.title()}, I'm a code assistant. How can I help you?"}
-            ]
-        for msg in st.session_state.messages:
-            st.chat_message(msg["role"]).write(msg['content'])
         st.warning("Please type a coding question to get started.")
     elif not groq_api_key:
         st.info("👈 Please enter Groq API key in the sidebar to continue.")
