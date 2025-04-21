@@ -37,7 +37,7 @@ if 'groq_api_key' not in st.session_state:
     st.session_state.groq_api_key = ''
 
 # Login
-def login():
+def login_screen():
     st.title("🔐 Login")
     with st.form("login_form", clear_on_submit=True):
         user_name = st.text_input("Enter your Name:")
