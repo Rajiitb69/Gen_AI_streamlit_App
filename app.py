@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 import os
 import re
-from langchain.callbacks import StreamlitCallbackHandler
+from langchain.callbacks.streamlit import StreamlitCallbackHandler
 from langchain_groq import ChatGroq
 
 from langchain.chains.combine_documents import create_stuff_documents_chain
@@ -47,7 +47,7 @@ def login():
                 st.session_state.logged_in = True
                 st.session_state.user_name = user_name
                 st.success("Login successful!")
-                st.experimental_rerun()  # To go straight to the main app
+                st.rerun()  # To go straight to the main app
             elif user_name == '' or not user_name:
                 st.error("Please enter your Name")
             elif not secret_key:
@@ -127,5 +127,5 @@ def main_app(user_name):
 if not st.session_state.logged_in:
     login()
 else:
-    main_app()
+    main_app(st.session_state.user_name)
 
