@@ -66,7 +66,7 @@ def greeting_screen():
         <p style='font-size:18px;'>Let's get you started! We'll need your GROQ API Key next.</p>
         """,
         unsafe_allow_html=True)
-    st.image("https://media.giphy.com/media/LmNwrBhejkK9EFP504/giphy.gif", width=300)
+    st.image("https://i.giphy.com/media/LmNwrBhejkK9EFP504/giphy.gif", width=300)
     if st.button("Let's Go 🚀"):
         st.session_state.step = 'ask_api_key'
         st.rerun()
@@ -75,12 +75,19 @@ def api_key_screen():
     st.title("🔑 Enter Your GROQ API Key")
     groq_api_key = st.text_input("GROQ API Key", type="password")
     if st.button("Submit"):
-        if groq_api_key.strip():
-            st.session_state.groq_api_key = groq_api_key.strip()
-            st.session_state.step = 'main'
-            st.rerun()
-        else:
+        if not groq_api_key.strip():
             st.error("Please enter a valid API key.")
+            return
+        with st.spinner("🔄 Validating your GROQ API key..."):
+            try:
+                llm = ChatGroq(model="llama-3.3-70b-versatile", groq_api_key=groq_api_key)
+                _ = llm.invoke([HumanMessage(content="Hello!")])
+                st.session_state.groq_api_key = groq_api_key.strip()
+                st.session_state.step = 'main'
+                st.success("API key validated successfully! 🎉")
+                st.rerun()
+            except Exception as e:
+                st.error("❌ Invalid GROQ API key")
 
 # Streamlit UI                
 def main_app():
