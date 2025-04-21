@@ -139,15 +139,9 @@ def get_layout(tool):
             st_cb=StreamlitCallbackHandler(st.container(),expand_new_thoughts=False)
             response=chain.invoke({"input": query,"chat_history": chat_history}, callbacks=[st_cb])
             final_answer = response.content if hasattr(response, "content") else str(response)
-            st.write(final_answer)
+            with st.expander("💬 Assistant's Answer", expanded=True):
+                st.markdown(final_answer)
             st.session_state.messages.append({'role': 'assistant', "content": final_answer})
-    
-        st.markdown("### 🗂️ Previous Chat History")
-
-        for i, msg in enumerate(st.session_state.messages[:-1]):
-            if msg["role"] == "assistant":
-                with st.expander(f"🤖 Assistant: (Response #{i//2 + 1})"):
-                    st.markdown(msg["content"])
             
     elif user_name!='' and groq_api_key and not query:
         st.warning("Please type a query to get started.")
