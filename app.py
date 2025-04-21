@@ -61,6 +61,10 @@ def login_screen():
 # Logout screen
 def logout_sidebar(user_name):
     # Sidebar logout
+    # Set sidebar width using CSS
+    st.markdown("""<style>
+                    section[data-testid="stSidebar"] {min-width: 250px; max-width: 250px; width: 250px;}
+                </style>""", unsafe_allow_html=True)
     with st.sidebar:
         st.markdown("## 👤 User Panel")
         st.write(f"Logged in as: **{user_name}**")
@@ -117,16 +121,9 @@ def api_key_screen():
 
 # Streamlit UI                
 def code_assistant_screen():
-    
     groq_api_key = st.session_state.groq_api_key
     user_name = st.session_state.user_name.title()
-    # Set sidebar width using CSS
-    st.markdown("""<style>
-                    section[data-testid="stSidebar"] {min-width: 250px; max-width: 250px; width: 250px;}
-                </style>""", unsafe_allow_html=True)
-    
     logout_sidebar(user_name)
-            
     st.title("🤖 Your Coding Assistant")
     """
     It's a code assistant that provides you with answers to your queries. It helps users with code suggestions,
@@ -183,20 +180,29 @@ def code_assistant_screen():
         st.warning("Please type a coding question to get started.")
 
 def math_assistant_screen():
-    st.subheader("🧮 Math Assistant")
-    st.write("Your assistant is ready to help with code.")
+    groq_api_key = st.session_state.groq_api_key
+    user_name = st.session_state.user_name.title()
+    logout_sidebar(user_name)
+    st.title("🤖 Your Math Assistant")
 
 def RAG_based_chatbot_screen():
-    st.subheader("🔎 RAG-based Chatbot")
-    st.write("Your assistant is ready to help with code.")
+    groq_api_key = st.session_state.groq_api_key
+    user_name = st.session_state.user_name.title()
+    logout_sidebar(user_name)
+    st.title("🤖 Your RAG Based Chatbot")
 
 def text_summarization_screen():
-    st.subheader("📝 Text Summarization")
-    st.write("Your assistant is ready to help with code.")
+    groq_api_key = st.session_state.groq_api_key
+    user_name = st.session_state.user_name.title()
+    logout_sidebar(user_name)
+    st.title("🤖 Your Text Summarization Assistant")
 
 def content_summarization_screen():
     st.subheader("📺 Youtube/Website Content Summarization")
-    st.write("Your assistant is ready to help with code.")
+    groq_api_key = st.session_state.groq_api_key
+    user_name = st.session_state.user_name.title()
+    logout_sidebar(user_name)
+    st.title("🤖 Your Content Summarization Assistant")
     
 # Dispatcher to selected screen
 def main_router():
