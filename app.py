@@ -97,6 +97,13 @@ def get_layout(tool):
     output_dict['header']
     
     query = st.chat_input(placeholder="Write your query?")
+    
+    # Toggle to expand/collapse all previous responses
+    if "expand_all" not in st.session_state:
+        st.session_state.expand_all = True
+    
+    if st.button("🔄 Toggle Expand/Collapse Previous Responses"):
+        st.session_state.expand_all = not st.session_state.expand_all
 
     if "messages" not in st.session_state:
         st.session_state["messages"]=[
@@ -139,9 +146,14 @@ def get_layout(tool):
             st_cb=StreamlitCallbackHandler(st.container(),expand_new_thoughts=False)
             response=chain.invoke({"input": query,"chat_history": chat_history}, callbacks=[st_cb])
             final_answer = response.content if hasattr(response, "content") else str(response)
-            with st.expander("💬 Assistant's Answer", expanded=True):
-                st.markdown(final_answer)
+            st.write(final_answer)
             st.session_state.messages.append({'role': 'assistant', "content": final_answer})
+        
+        for i, msg in enumerate(st.session_state.messages[:-1]):  # exclude latest
+        if msg["role"] == "assistant":
+            with st.chat_message("assistant"):
+                with st.expander(f"🧠 Response #{i//2 + 1}", expanded=st.session_state.expand_all):
+                    st.markdown(msg["content"])
             
     elif user_name!='' and groq_api_key and not query:
         st.warning("Please type a query to get started.")
