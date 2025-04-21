@@ -84,15 +84,25 @@ def api_key_screen():
 
 # Streamlit UI                
 def main_app():
+    
+    groq_api_key = st.session_state.groq_api_key
+    user_name = st.session_state.user_name.title()
+    
+    # Sidebar logout
+    with st.sidebar:
+        st.markdown("## 👤 User Panel")
+        st.write(f"Logged in as: **{user_name}**")
+        if st.button("🔒 Logout"):
+            st.session_state.step = 'login'
+            st.session_state.username = ''
+            st.session_state.api_key = ''
+            st.rerun()
+            
     st.title("🤖 Your Coding Assistant")
     """
     It's a code assistant that provides you with answers to your queries. It helps users with code suggestions,
     debugging, and explanations across languages like Python, Java, C++, JavaScript, SQL, etc.
     """
-    
-    ## Sidebar for settings
-    groq_api_key = st.session_state.groq_api_key
-    user_name = st.session_state.user_name.title()
     
     query = st.chat_input(placeholder="Write your query?")
 
