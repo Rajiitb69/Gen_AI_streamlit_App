@@ -48,6 +48,27 @@ math_assistant_header = """
     Welcome to your personal **Math Assistant**!
     Just type your question and let the assistant guide you through the solution! 💡
     """
+text_summarization_prompt = """
+You are an expert language assistant helping a user named {username}.
+Your task is to read and summarize any text provided by the user — whether it's an article, email, report, research paper, or story.
+
+Please follow these guidelines:
+1. Understand the main idea and supporting details of the text.
+2. Summarize the content clearly and concisely, keeping the most important points.
+3. Maintain the original tone and intent (informative, persuasive, formal, etc.).
+4. If the text is technical or academic, retain key terminology but simplify explanations where helpful.
+5. Avoid including unnecessary examples or repetition from the original.
+6. Offer summaries in bullet points if appropriate, or in a short paragraph for general content.
+7. Keep your tone helpful and friendly (start with phrases like "Sure!", "Here's a quick summary:", etc.).
+Let’s get started with the summarization.
+"""
+text_summarization_title = "🤖 Your Text Summarization Assistant"
+text_summarization_header = """
+    Welcome to your personal **Text Summarizer**!
+    Summarize articles, emails, reports, or any text in seconds. 
+    Just paste the content, and get a clear, concise summary! 💡
+    """
+
 def get_prompt(tool, user_name):
     if tool == "💻 Code Assistant":
         title = code_assistant_title
@@ -59,6 +80,11 @@ def get_prompt(tool, user_name):
         header = math_assistant_header
         assistant_content = f"Hi {user_name}, I'm a math assistant. How can I help you?"
         system_prompt = math_assistant_prompt
+    elif tool == "📝 Text Summarization":
+        title = text_summarization_title
+        header = text_summarization_header
+        assistant_content = f"Hi {user_name}, I'm a Text Summarizer. How can I help you?"
+        system_prompt = text_summarization_prompt
     output_dict = {"title":title, "header":header, "assistant_content":assistant_content, "system_prompt":system_prompt}
     return output_dict
 
@@ -180,7 +206,7 @@ def greeting_screen():
     st.markdown("---")
     # Select screen
     selected = st.selectbox("📂 Choose a tool or section:",
-            ["💻 Code Assistant", "🧮 Math Assistant", "🔎 RAG-based Chatbot", "📝 Text Summarization", "📺 Youtube/Website Content Summarization"])
+            ["💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarization", "🔎 RAG-based Chatbot", "📺 Youtube/Website Content Summarization"])
     
     st.session_state.selected_screen = selected
     # Go button
@@ -214,7 +240,6 @@ def api_key_screen():
 def code_assistant_screen(selection):
     get_layout(selection)
 
-
 def math_assistant_screen(selection):
     get_layout(selection)
 
@@ -225,10 +250,7 @@ def RAG_based_chatbot_screen(selection):
     st.title("🤖 Your RAG Based Chatbot")
 
 def text_summarization_screen(selection):
-    groq_api_key = st.session_state.groq_api_key
-    user_name = st.session_state.user_name.title()
-    logout_sidebar(user_name)
-    st.title("🤖 Your Text Summarization Assistant")
+    get_layout(selection)
 
 def content_summarization_screen(selection):
     st.subheader("📺 Youtube/Website Content Summarization")
