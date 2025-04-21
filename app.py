@@ -29,10 +29,12 @@ Your reply style should be:
 """
 
 # Initialize session state
-if 'logged_in' not in st.session_state:
-    st.session_state.logged_in = False
+if 'step' not in st.session_state:
+    st.session_state.step = 'login'
 if 'user_name' not in st.session_state:
     st.session_state.user_name = ''
+if 'groq_api_key' not in st.session_state:
+    st.session_state.groq_api_key = ''
 
 # Login
 def login():
@@ -54,8 +56,34 @@ def login():
                 st.error("Please enter Secret Key")
             else:
                 st.error("Invalid Secret Key")
+
+def greeting_screen():
+    user = st.session_state.user_name.title()
+    st.title(f"👋 Hi {user}!")
+
+    st.markdown(f"""
+        <h4 style='color:#4CAF50;'>Welcome to your personal coding assistant 👨‍💻</h4>
+        <p style='font-size:18px;'>Let's get you started! We'll need your GROQ API Key next.</p>
+        """,
+        unsafe_allow_html=True)
+    st.image("https://media.giphy.com/media/LmNwrBhejkK9EFP504/giphy.gif", width=300)
+    if st.button("Let's Go 🚀"):
+        st.session_state.step = 'ask_api_key'
+        st.rerun()
+
+def api_key_screen():
+    st.title("🔑 Enter Your GROQ API Key")
+    groq_api_key = st.text_input("GROQ API Key", type="password")
+    if st.button("Submit"):
+        if groq_api_key.strip():
+            st.session_state.groq_api_key = groq_api_key.strip()
+            st.session_state.step = 'main'
+            st.rerun()
+        else:
+            st.error("Please enter a valid API key.")
+
 # Streamlit UI                
-def main_app(user_name):
+def main_app():
     st.title("🤖 Your Coding Assistant")
     """
     It's a code assistant that provides you with answers to your queries. It helps users with code suggestions,
@@ -63,14 +91,14 @@ def main_app(user_name):
     """
     
     ## Sidebar for settings
-    st.sidebar.title("INPUTS")
-    groq_api_key = st.sidebar.text_input("Enter your Groq API Key:",type="password")
+    groq_api_key = st.session_state.groq_api_key
+    user_name = st.session_state.user_name.title()
     
     query = st.chat_input(placeholder="Write your query?")
 
     if "messages" not in st.session_state:
         st.session_state["messages"]=[
-            {"role": "assistant", "content": f"Hi {user_name.title()}, I'm a code assistant. How can I help you?"}
+            {"role": "assistant", "content": f"Hi {user_name}, I'm a code assistant. How can I help you?"}
         ]
     for msg in st.session_state.messages:
         st.chat_message(msg["role"]).write(msg['content'])
@@ -114,13 +142,15 @@ def main_app(user_name):
             
     elif user_name!='' and groq_api_key and not query:
         st.warning("Please type a coding question to get started.")
-    elif not groq_api_key:
-        st.info("👈 Please enter Groq API key in the sidebar to continue.")
 
 
-# App logic
-if not st.session_state.logged_in:
-    login()
-else:
-    main_app(st.session_state.user_name)
+# App Flow Control
+if st.session_state.step == 'login':
+    login_screen()
+elif st.session_state.step == 'greeting':
+    greeting_screen()
+elif st.session_state.step == 'ask_api_key':
+    api_key_screen()
+elif st.session_state.step == 'main':
+    main_app()
 
