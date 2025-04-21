@@ -62,11 +62,9 @@ def greeting_screen():
     st.title(f"👋 Hi {user}!")
 
     st.markdown(f"""
-        <h4 style='color:#4CAF50;'>Welcome to your personal coding assistant 👨‍💻</h4>
-        <p style='font-size:18px;'>Let's get you started! We'll need your GROQ API Key next.</p>
-        """,
-        unsafe_allow_html=True)
-    st.image("https://i.giphy.com/media/LmNwrBhejkK9EFP504/giphy.gif", width=300)
+        <h4 style='color:#4CAF50;'>Welcome to your Personal AI Assistant 👨‍💻</h4>
+        <p style='font-size:18px;'>Let's get you started! We'll need your GROQ API Key next...</p>
+        """,unsafe_allow_html=True)
     if st.button("Let's Go 🚀"):
         st.session_state.step = 'ask_api_key'
         st.rerun()
@@ -94,6 +92,11 @@ def main_app():
     
     groq_api_key = st.session_state.groq_api_key
     user_name = st.session_state.user_name.title()
+    # Set sidebar width using CSS
+    st.markdown("""<style>
+                    [data-testid="stSidebar"] {width: 250px;}
+                    [data-testid="stSidebar"] > div:first-child { width: 250px;}
+                </style>""", unsafe_allow_html=True)
     
     # Sidebar logout
     with st.sidebar:
