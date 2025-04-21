@@ -102,7 +102,7 @@ def get_layout(tool):
         llm3 = ChatGroq(model="llama-3.3-70b-versatile",
                        groq_api_key=groq_api_key,
                         temperature = 0.2,  # for randomness, low- concise & accurate output, high - diverse and creative output
-                      max_tokens = 500,   # Short/long output responses (control length)
+                      max_tokens = 600,   # Short/long output responses (control length)
                         model_kwargs={
                                    "top_p" : 0.5,        # high - diverse and creative output
                                     })
