@@ -13,11 +13,9 @@ from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 # Dummy credentials
 PASSWORD = "Sherlocked"
 
-system_prompt = """You are CodeGenie, an expert software engineer and coding tutor.
-You are currently helping a user named {username}.
-
+code_assistant_prompt = f"""You are CodeGenie, an expert software engineer and coding tutor.
+You are currently helping a user named {user_name}.
 Your job is to help {username} with code suggestions, debugging, and explanations across programming languages like Python, Java, C++, JavaScript, SQL, etc.
-
 Your reply style should be:
 - Friendly and encouraging (start with phrases like "Great question!", "Sure!", or "Let's walk through it...")
 - Clear, concise answers
@@ -27,6 +25,99 @@ Your reply style should be:
 - Use the language asked by the user
 - Keep extra text minimal, but don’t be robotic
 """
+code_assistant_title = "🤖 Your Coding Assistant"
+code_assistant_header = """
+    It's a code assistant that provides you with answers to your queries. It helps users with code suggestions,
+    debugging, and explanations across languages like Python, Java, C++, JavaScript, SQL, etc.
+    """
+math_assistant_prompt = f"""
+You are an expert mathematics tutor helping a user named {user_name}.
+Your job is to solve mathematical questions of all kinds, including arithmetic, algebra, geometry, calculus, statistics, linear algebra, and word problems.
+Please follow these guidelines:
+1. Break the problem down into clear, logical steps.
+2. Show all work for calculations and justify any rules or theorems used.
+3. If the problem is word-based, first extract the relevant information and formulate equations.
+4. If multiple approaches exist, briefly mention them, and then choose the most efficient one.
+5. If the final answer is numerical, round it to a reasonable number of decimal places if needed.
+6. Use LaTeX formatting to display math expressions cleanly if supported.
+Your reply style should be friendly and encouraging (start with phrases like "Great question!", "Sure!", or "Let's walk through it...")
+Let’s begin solving the problem.
+"""
+math_assistant_title = "🤖 Your Math Assistant"
+math_assistant_header = """
+    Welcome to your personal **Math Assistant**!
+    Just type your question and let the assistant guide you through the solution! 💡
+    """
+def get_prompt(tool, user_name):
+    if tool == "💻 Code Assistant":
+        title = code_assistant_title
+        header = code_assistant_header
+        assistant_content = f"Hi {user_name}, I'm a code assistant. How can I help you?"
+        system_prompt = code_assistant_prompt
+    elif tool == "🧮 Math Assistant":
+        title = math_assistant_title
+        header = math_assistant_header
+        assistant_content = f"Hi {user_name}, I'm a math assistant. How can I help you?"
+        system_prompt = math_assistant_prompt
+    output_dict = {"title":title, "header":header, "assistant_content":assistant_content, "system_prompt":system_prompt}
+    return output_dict
+
+def get_layout(tool):
+    groq_api_key = st.session_state.groq_api_key
+    user_name = st.session_state.user_name.title()
+    logout_sidebar(user_name)
+    output_dict = get_prompt(tool, user_name)
+    st.title(output_dict['title'])
+    output_dict['header']
+    
+    query = st.chat_input(placeholder="Write your query?")
+
+    if "messages" not in st.session_state:
+        st.session_state["messages"]=[
+            {"role": "assistant", "content": output_dict['assistant_content']}
+        ]
+    for msg in st.session_state.messages:
+        st.chat_message(msg["role"]).write(msg['content'])
+    
+    if user_name!='' and groq_api_key and query:
+            
+        st.session_state.messages.append({"role": "user", "content": query})
+        st.chat_message("user").write(query)
+        
+        # Reconstruct chat history (excluding initial assistant greeting)
+        chat_history = []
+        for msg in st.session_state.messages[1:]:
+            if msg["role"] == "user":
+                chat_history.append(HumanMessage(content=msg["content"]))
+            elif msg["role"] == "assistant":
+                chat_history.append(AIMessage(content=msg["content"]))
+    
+        # Prompt template with username
+        prompt_template = ChatPromptTemplate.from_messages([
+            ("system", output_dict['system_prompt']),
+            MessagesPlaceholder(variable_name="chat_history"),
+            ("human", "{input}")
+        ]).partial(username=user_name)
+        
+        llm3 = ChatGroq(model="llama-3.3-70b-versatile",
+                       groq_api_key=groq_api_key,
+                        temperature = 0.2,  # for randomness, low- concise & accurate output, high - diverse and creative output
+                      max_tokens = 500,   # Short/long output responses (control length)
+                        model_kwargs={
+                                   "top_p" : 0.5,        # high - diverse and creative output
+                                    })
+        
+        chain: Runnable = prompt_template | llm3
+    
+        with st.chat_message("assistant"):
+            st_cb=StreamlitCallbackHandler(st.container(),expand_new_thoughts=False)
+            response=chain.invoke({"input": query,"chat_history": chat_history}, callbacks=[st_cb])
+            final_answer = response.content if hasattr(response, "content") else str(response)
+            st.write(final_answer)
+            st.session_state.messages.append({'role': 'assistant', "content": final_answer})
+            
+    elif user_name!='' and groq_api_key and not query:
+        st.warning("Please type a coding question to get started.")
 
 # Initialize session state
 if 'step' not in st.session_state:
@@ -89,7 +180,7 @@ def greeting_screen():
     st.markdown("---")
     # Select screen
     selected = st.selectbox("📂 Choose a tool or section:",
-            [ "💻 Code Assistant", "🧮 Math Assistant", "🔎 RAG-based Chatbot", "📝 Text Summarization", "📺 Youtube/Website Content Summarization"])
+            ["💻 Code Assistant", "🧮 Math Assistant", "🔎 RAG-based Chatbot", "📝 Text Summarization", "📺 Youtube/Website Content Summarization"])
     
     st.session_state.selected_screen = selected
     # Go button
@@ -120,84 +211,26 @@ def api_key_screen():
                 st.error("❌ Invalid GROQ API key")
 
 # Streamlit UI                
-def code_assistant_screen():
-    groq_api_key = st.session_state.groq_api_key
-    user_name = st.session_state.user_name.title()
-    logout_sidebar(user_name)
-    st.title("🤖 Your Coding Assistant")
-    """
-    It's a code assistant that provides you with answers to your queries. It helps users with code suggestions,
-    debugging, and explanations across languages like Python, Java, C++, JavaScript, SQL, etc.
-    """
-    
-    query = st.chat_input(placeholder="Write your query?")
+def code_assistant_screen(selection):
+    get_layout(selection)
 
-    if "messages" not in st.session_state:
-        st.session_state["messages"]=[
-            {"role": "assistant", "content": f"Hi {user_name}, I'm a code assistant. How can I help you?"}
-        ]
-    for msg in st.session_state.messages:
-        st.chat_message(msg["role"]).write(msg['content'])
-    
-    if user_name!='' and groq_api_key and query:
-            
-        st.session_state.messages.append({"role": "user", "content": query})
-        st.chat_message("user").write(query)
-        
-        # Reconstruct chat history (excluding initial assistant greeting)
-        chat_history = []
-        for msg in st.session_state.messages[1:]:
-            if msg["role"] == "user":
-                chat_history.append(HumanMessage(content=msg["content"]))
-            elif msg["role"] == "assistant":
-                chat_history.append(AIMessage(content=msg["content"]))
-    
-        # Prompt template with username
-        prompt_template = ChatPromptTemplate.from_messages([
-            ("system", system_prompt),
-            MessagesPlaceholder(variable_name="chat_history"),
-            ("human", "{input}")
-        ]).partial(username=user_name)
-        
-        llm3 = ChatGroq(model="llama-3.3-70b-versatile",
-                       groq_api_key=groq_api_key,
-                        temperature = 0.2,  # for randomness, low- concise & accurate output, high - diverse and creative output
-                      max_tokens = 500,   # Short/long output responses (control length)
-                        model_kwargs={
-                                   "top_p" : 0.5,        # high - diverse and creative output
-                                    })
-        
-        chain: Runnable = prompt_template | llm3
-    
-        with st.chat_message("assistant"):
-            st_cb=StreamlitCallbackHandler(st.container(),expand_new_thoughts=False)
-            response=chain.invoke({"input": query,"chat_history": chat_history}, callbacks=[st_cb])
-            final_answer = response.content if hasattr(response, "content") else str(response)
-            st.write(final_answer)
-            st.session_state.messages.append({'role': 'assistant', "content": final_answer})
-            
-    elif user_name!='' and groq_api_key and not query:
-        st.warning("Please type a coding question to get started.")
 
-def math_assistant_screen():
-    groq_api_key = st.session_state.groq_api_key
-    user_name = st.session_state.user_name.title()
-    logout_sidebar(user_name)
-    st.title("🤖 Your Math Assistant")
+def math_assistant_screen(selection):
+    get_layout(selection)
 
-def RAG_based_chatbot_screen():
+def RAG_based_chatbot_screen(selection):
     groq_api_key = st.session_state.groq_api_key
     user_name = st.session_state.user_name.title()
     logout_sidebar(user_name)
     st.title("🤖 Your RAG Based Chatbot")
 
-def text_summarization_screen():
+def text_summarization_screen(selection):
     groq_api_key = st.session_state.groq_api_key
     user_name = st.session_state.user_name.title()
     logout_sidebar(user_name)
     st.title("🤖 Your Text Summarization Assistant")
 
-def content_summarization_screen():
+def content_summarization_screen(selection):
     st.subheader("📺 Youtube/Website Content Summarization")
     groq_api_key = st.session_state.groq_api_key
     user_name = st.session_state.user_name.title()
@@ -208,15 +241,15 @@ def content_summarization_screen():
 def main_router():
     selection = st.session_state.get("selected_screen", "💻 Code Assistant")
     if selection == "💻 Code Assistant":
-        code_assistant_screen()
+        code_assistant_screen(selection)
     elif selection == "🧮 Math Assistant":
-        math_assistant_screen()
+        math_assistant_screen(selection)
     elif selection == "🔎 RAG-based Chatbot":
-        RAG_based_chatbot_screen()
+        RAG_based_chatbot_screen(selection)
     elif selection == "📝 Text Summarization":
-        text_summarization_screen()
+        text_summarization_screen(selection)
     elif selection == "📺 Youtube/Website Content Summarization":
-        math_assistant_screen()
+        math_assistant_screen(selection)
     else:
         st.warning("No screen selected.")
 
