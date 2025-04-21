@@ -186,8 +186,8 @@ def logout_sidebar(user_name):
         st.markdown("## 👤 User Panel")
         st.write(f"Logged in as: **{user_name}**")
         if st.button("🔒 Logout"):
-            for key in ["step", "username", "user_name", "api_key", "selected_screen"]:
-                st.session_state.pop(key, None)
+            for key in list(st.session_state.keys()):
+                del st.session_state[key]
             st.rerun()
 
 def greeting_screen():
