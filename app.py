@@ -123,10 +123,6 @@ def main_app():
     elif not user_name or not groq_api_key:
         st.info("👈 Please enter your name and Groq API key in the sidebar to continue.")
 
-    if st.sidebar.button("Logout"):
-        st.session_state.logged_in = False
-        st.experimental_rerun()
-        login()
 
 # App logic
 if not st.session_state.logged_in:
