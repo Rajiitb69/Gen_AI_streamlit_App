@@ -43,7 +43,6 @@ def login_screen():
         user_name = st.text_input("Enter your Name:")
         secret_key = st.text_input("Enter Secret Key:", type="password")
         submitted = st.form_submit_button("Login")
-
         if submitted:
             if secret_key == PASSWORD:
                 st.session_state.logged_in = True
@@ -57,7 +56,20 @@ def login_screen():
             else:
                 st.error("Invalid Secret Key")
 
+# Logout screen
+def logout_sidebar():
+    # Sidebar logout
+    with st.sidebar:
+        st.markdown("## 👤 User Panel")
+        st.write(f"Logged in as: **{user_name}**")
+        if st.button("🔒 Logout"):
+            st.session_state.step = 'login'
+            st.session_state.username = ''
+            st.session_state.api_key = ''
+            st.rerun()
+
 def greeting_screen():
+    logout_sidebar()
     user = st.session_state.user_name.title()
     st.title(f"👋 Hi {user}!")
 
@@ -70,6 +82,7 @@ def greeting_screen():
         st.rerun()
 
 def api_key_screen():
+    logout_sidebar()
     st.title("🔑 Enter Your GROQ API Key")
     groq_api_key = st.text_input("GROQ API Key", type="password")
     if st.button("Submit"):
@@ -97,15 +110,7 @@ def main_app():
                     section[data-testid="stSidebar"] {min-width: 250px; max-width: 250px; width: 250px;}
                 </style>""", unsafe_allow_html=True)
     
-    # Sidebar logout
-    with st.sidebar:
-        st.markdown("## 👤 User Panel")
-        st.write(f"Logged in as: **{user_name}**")
-        if st.button("🔒 Logout"):
-            st.session_state.step = 'login'
-            st.session_state.username = ''
-            st.session_state.api_key = ''
-            st.rerun()
+    logout_sidebar()
             
     st.title("🤖 Your Coding Assistant")
     """
