@@ -62,7 +62,7 @@ Please follow these guidelines:
 7. Keep your tone helpful and friendly (start with phrases like "Sure!", "Here's a quick summary:", etc.).
 Let’s get started with the summarization.
 """
-text_summarization_title = "🤖 Your Text Summarization Assistant"
+text_summarization_title = "🤖 Your Text Summarizer"
 text_summarization_header = """
     Welcome to your personal **Text Summarizer**!
     Summarize articles, emails, reports, or any text in seconds. 
@@ -141,9 +141,16 @@ def get_layout(tool):
             final_answer = response.content if hasattr(response, "content") else str(response)
             st.write(final_answer)
             st.session_state.messages.append({'role': 'assistant', "content": final_answer})
+    
+        st.markdown("### 🗂️ Previous Chat History")
+
+        for i, msg in enumerate(st.session_state.messages[:-1]):
+            if msg["role"] == "assistant":
+                with st.expander(f"🤖 Assistant: (Response #{i//2 + 1})"):
+                    st.markdown(msg["content"])
             
     elif user_name!='' and groq_api_key and not query:
-        st.warning("Please type a coding question to get started.")
+        st.warning("Please type a query to get started.")
 
 # Initialize session state
 if 'step' not in st.session_state:
