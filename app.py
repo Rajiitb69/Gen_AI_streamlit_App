@@ -42,9 +42,9 @@ def login():
         if submitted:
             if secret_key == PASSWORD:
                 st.session_state.logged_in = True
-                st.success("Login successful!")
+                main_app()
             else:
-                st.error("Invalid username or password")
+                st.error("Invalid Secret Key")
 # Streamlit UI                
 def main_app():
     st.title("🤖 Your Coding Assistant")
@@ -55,7 +55,6 @@ def main_app():
     
     ## Sidebar for settings
     st.sidebar.title("INPUTS")
-    user_name = st.sidebar.text_input("Enter your Name:")
     groq_api_key = st.sidebar.text_input("Enter your Groq API Key:",type="password")
     
     # ✅ Reset messages if user changed
@@ -65,7 +64,7 @@ def main_app():
     if user_name != st.session_state["prev_user_name"] and user_name:
         st.session_state["prev_user_name"] = user_name
         st.session_state["messages"] = [
-            {"role": "assistant", "content": f"Hi {user_name}, I'm CodeGenie. How can I help you today?"}
+            {"role": "assistant", "content": f"Hi {user_name.title()}, I'm CodeGenie. How can I help you today?"}
         ]
     
     query = st.chat_input(placeholder="Write your query?")
@@ -73,7 +72,7 @@ def main_app():
     if user_name and groq_api_key and query:
         if "messages" not in st.session_state:
             st.session_state["messages"]=[
-                {"role": "assistant", "content": f"Hi {user_name}, I'm a code assistant. How can I help you?"}
+                {"role": "assistant", "content": f"Hi {user_name.title()}, I'm a code assistant. How can I help you?"}
             ]
         for msg in st.session_state.messages:
             st.chat_message(msg["role"]).write(msg['content'])
@@ -124,9 +123,10 @@ def main_app():
     elif not user_name or not groq_api_key:
         st.info("👈 Please enter your name and Groq API key in the sidebar to continue.")
 
-    if st.button("Logout"):
+    if st.sidebar.button("Logout"):
         st.session_state.logged_in = False
         st.experimental_rerun()
+        login()
 
 # App logic
 if not st.session_state.logged_in:
