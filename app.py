@@ -150,10 +150,10 @@ def get_layout(tool):
             st.session_state.messages.append({'role': 'assistant', "content": final_answer})
         
         for i, msg in enumerate(st.session_state.messages[:-1]):  # exclude latest
-        if msg["role"] == "assistant":
-            with st.chat_message("assistant"):
-                with st.expander(f"🧠 Response #{i//2 + 1}", expanded=st.session_state.expand_all):
-                    st.markdown(msg["content"])
+            if msg["role"] == "assistant":
+                with st.chat_message("assistant"):
+                    with st.expander(f"🧠 Response #{i//2 + 1}", expanded=st.session_state.expand_all):
+                        st.markdown(msg["content"])
             
     elif user_name!='' and groq_api_key and not query:
         st.warning("Please type a query to get started.")
