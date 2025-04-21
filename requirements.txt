@@ -1,0 +1,4 @@
+langchain
+huggingface_hub
+langchain-community
+langchain_groq
