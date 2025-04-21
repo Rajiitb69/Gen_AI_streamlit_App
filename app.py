@@ -51,6 +51,8 @@ def login():
             elif user_name == '' or not user_name:
                 st.error("Please enter your Name")
             elif not secret_key:
+                st.error("Please enter Secret Key")
+            else:
                 st.error("Invalid Secret Key")
 # Streamlit UI                
 def main_app(user_name):
