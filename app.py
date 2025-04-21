@@ -57,7 +57,7 @@ def login_screen():
                 st.error("Invalid Secret Key")
 
 # Logout screen
-def logout_sidebar():
+def logout_sidebar(user_name):
     # Sidebar logout
     with st.sidebar:
         st.markdown("## 👤 User Panel")
@@ -69,10 +69,9 @@ def logout_sidebar():
             st.rerun()
 
 def greeting_screen():
-    logout_sidebar()
     user = st.session_state.user_name.title()
     st.title(f"👋 Hi {user}!")
-
+    logout_sidebar(user)
     st.markdown(f"""
         <h4 style='color:#4CAF50;'>Welcome to your Personal AI Assistant 👨‍💻</h4>
         <p style='font-size:18px;'>Let's get you started! We'll need your GROQ API Key next...</p>
@@ -82,9 +81,10 @@ def greeting_screen():
         st.rerun()
 
 def api_key_screen():
-    logout_sidebar()
     st.title("🔑 Enter Your GROQ API Key")
     groq_api_key = st.text_input("GROQ API Key", type="password")
+    user = st.session_state.user_name.title()
+    logout_sidebar(user)
     if st.button("Submit"):
         if not groq_api_key.strip():
             st.error("Please enter a valid API key.")
@@ -110,7 +110,7 @@ def main_app():
                     section[data-testid="stSidebar"] {min-width: 250px; max-width: 250px; width: 250px;}
                 </style>""", unsafe_allow_html=True)
     
-    logout_sidebar()
+    logout_sidebar(user_name)
             
     st.title("🤖 Your Coding Assistant")
     """
