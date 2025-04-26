@@ -448,38 +448,6 @@ def get_layout(tool):
     elif user_name!='' and groq_api_key and not query:
         st.warning("Please type a query to get started.")
 
-# Initialize session state
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-if 'user_name' not in st.session_state:
-    st.session_state.user_name = ''
-if 'analysis_ready' not in st.session_state:
-    st.session_state.analysis_ready = False
-if 'retriever_ready' not in st.session_state:
-    st.session_state.retriever_ready = False
-if "last_selected" not in st.session_state:
-    st.session_state.last_selected = None
-
-# Sidebar - Option Menu
-with st.sidebar:
-    st.markdown("""<style>
-                section[data-testid="stSidebar"] {min-width: 350px; max-width: 350px; width: 350px;}
-            </style>""", unsafe_allow_html=True)
-    selected = option_menu(
-        menu_title="Main Menu",
-        options=["🏠 Home", "📊 Excel Analyser", "🔎 RAG-based Chatbot", "💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarization", "✉️ Contact Us"],
-        menu_icon="cast",
-        default_index=0,)
-
-# Check if user changed selection
-if selected != st.session_state.last_selected:
-    st.session_state.last_selected = selected
-    keys_to_keep = ["logged_in", "user_name","last_selected"]  # things you want to keep
-    keys_to_delete = [key for key in st.session_state.keys() if key not in keys_to_keep]
-    for key in keys_to_delete:
-        del st.session_state[key]
-    st.rerun()
-
 # Login
 def login_screen():
     st.title("🔐 Login")
@@ -532,35 +500,64 @@ def without_upload(selection):
     elif selection == "📝 Text Summarization":
         text_summarization_screen(selection)
 
+# Initialize session state
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+if 'user_name' not in st.session_state:
+    st.session_state.user_name = ''
+if 'analysis_ready' not in st.session_state:
+    st.session_state.analysis_ready = False
+if 'retriever_ready' not in st.session_state:
+    st.session_state.retriever_ready = False
+if "last_selected" not in st.session_state:
+    st.session_state.last_selected = None
+
+# Sidebar - Option Menu
+with st.sidebar:
+    st.markdown("""<style>
+                section[data-testid="stSidebar"] {min-width: 350px; max-width: 350px; width: 350px;}
+            </style>""", unsafe_allow_html=True)
+    selected = option_menu(
+        menu_title="Main Menu",
+        options=["🏠 Home", "📊 Excel Analyser", "🔎 RAG-based Chatbot", "💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarization", "✉️ Contact Us"],
+        menu_icon="cast",
+        default_index=0,)
+
+# Check if user changed selection
+if selected != st.session_state.last_selected:
+    st.session_state.last_selected = selected
+    keys_to_keep = ["logged_in", "user_name","last_selected"]  # things you want to keep
+    keys_to_delete = [key for key in st.session_state.keys() if key not in keys_to_keep]
+    for key in keys_to_delete:
+        del st.session_state[key]
+    st.rerun()
+    
 # App Flow Control
-def run_app():
-    selection = st.session_state.last_selected
-    if not st.session_state.logged_in:
-        if selection == "🏠 Home":
-            home_screen()
-        elif selection == "✉️ Contact Us":
-            st.markdown("""<h4>Welcome to your <span style="color:#FF6F61;">Personal AI Assistant</span> 👨‍💻</h4>""")
-        elif selection in ("🏠 Home", "✉️ Contact Us"):
-            login_screen()
-            # st.warning("🔒 Please login to access other sections.")
+selection = st.session_state.last_selected
+if not st.session_state.logged_in:
+    if selection == "🏠 Home":
+        home_screen()
+    elif selection == "✉️ Contact Us":
+        st.markdown("""<h4>Welcome to your <span style="color:#FF6F61;">Personal AI Assistant</span> 👨‍💻</h4>""")
+    elif selection in ("🏠 Home", "✉️ Contact Us"):
+        login_screen()
+        # st.warning("🔒 Please login to access other sections.")
 
-    else:
-        if selection == "🏠 Home":
-            home_screen()
-        elif selection == "✉️ Contact Us":
-            st.markdown("""<h4>Welcome to your <span style="color:#FF6F61;">Personal AI Assistant</span> 👨‍💻</h4>""")
-        elif selection in ("💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarization"):
-            without_upload(selection)
-        elif selection == "📊 Excel Analyser":
-            if not st.session_state.analysis_ready:
-                data_analysis_uploader()
-            else:
-                excel_analyser_screen(selection)
-        elif selection == "🔎 RAG-based Chatbot":
-            if not st.session_state.retriever_ready:
-                rag_chatbot_uploader()
-            else:
-                RAG_based_chatbot_screen(selection)
+else:
+    if selection == "🏠 Home":
+        home_screen()
+    elif selection == "✉️ Contact Us":
+        st.markdown("""<h4>Welcome to your <span style="color:#FF6F61;">Personal AI Assistant</span> 👨‍💻</h4>""")
+    elif selection in ("💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarization"):
+        without_upload(selection)
+    elif selection == "📊 Excel Analyser":
+        if not st.session_state.analysis_ready:
+            data_analysis_uploader()
+        else:
+            excel_analyser_screen(selection)
+    elif selection == "🔎 RAG-based Chatbot":
+        if not st.session_state.retriever_ready:
+            rag_chatbot_uploader()
+        else:
+            RAG_based_chatbot_screen(selection)
 
-# Start app
-run_app()
