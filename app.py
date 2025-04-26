@@ -73,7 +73,7 @@ code_assistant_title = "🤖 Your Coding Assistant"
 code_assistant_header = """
     <div style="padding: 10px; text-align: center;">
     <h2 style="color: #4CAF50; font-size: 28px; margin-bottom: 0;">🤖 Your Coding Assistant</h2>
-    <p style="font-size: 18px;">
+    <p style="font-size: 16px;">
         Welcome to your personal Coding Assistant! <br>
         Get instant help with code suggestions, debugging support, and clear explanations across a wide range of programming languages — including Python, Java, C++, JavaScript, SQL....  
         <br>
@@ -98,7 +98,7 @@ math_assistant_title = "🤖 Your Math Assistant"
 math_assistant_header = """
     <div style="padding: 10px; text-align: center;">
     <h2 style="color: #4CAF50; font-size: 28px; margin-bottom: 0;">🤖 Your Math Assistant</h2>
-    <p style="font-size: 18px;">
+    <p style="font-size: 16px;">
         Welcome to your personal Math Assistant!<br>
         Simply type your math question, and let the assistant guide you step-by-step through the solution.  
         <br>
@@ -124,7 +124,7 @@ text_summarization_title = "🤖 Your Text Summarizer"
 text_summarization_header = """
     <div style="padding: 10px; text-align: center;">
     <h2 style="color: #4CAF50; font-size: 28px; margin-bottom: 0;">📝 Your Text Summarizer</h2>
-    <p style="font-size: 18px;">
+    <p style="font-size: 16px;">
         Welcome to your personal Text Summarizer!<br>
         Effortlessly condense articles, emails, reports, or any text into clear and concise summaries — all within seconds.  
         <br>
