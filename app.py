@@ -458,10 +458,9 @@ if 'step' not in st.session_state:
     st.session_state.step = 'home'
 if 'user_name' not in st.session_state:
     st.session_state.user_name = ''
-if 'selected_screen' not in st.session_state:
-    st.session_state.selected_screen = "🏠 Home"
+
 if "previous_selection" not in st.session_state:
-    st.session_state.previous_selection = None
+    st.session_state.last_selected = None
 
 # Sidebar - Option Menu
 with st.sidebar:
@@ -473,16 +472,14 @@ with st.sidebar:
         options=["🏠 Home", "📊 Excel Analyser", "🔎 RAG-based Chatbot", "💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarization", "✉️ Contact Us"],
         menu_icon="cast",
         default_index=0,)
-    st.session_state.selected_screen = selected
 
 # Check if user changed selection
-if st.session_state.selected_screen != st.session_state.previous_selection:
-    keys_to_keep = ["logged_in", "user_name"]  # things you want to keep
-    keys_to_delete = [key for key in st.session_state.keys() if key not in keys_to_keep]
-    for key in keys_to_delete:
-        del st.session_state[key]
-    st.session_state.previous_selection = selected
-    st.rerun()
+keys_to_keep = ["logged_in", "user_name"]  # things you want to keep
+keys_to_delete = [key for key in st.session_state.keys() if key not in keys_to_keep]
+for key in keys_to_delete:
+    del st.session_state[key]
+st.session_state.last_selected = selected
+st.rerun()
 
 # Login
 def login_screen():
@@ -531,7 +528,7 @@ def text_summarization_screen(selection):
 
 def upload_screen():
     user = st.session_state.user_name.title()
-    selection = st.session_state.get("selected_screen", "📊 Excel Analyser")
+    selection = st.session_state.last_selected
     if selection == "📊 Excel Analyser":
         data_analysis_uploader()
     elif selection == "🔎 RAG-based Chatbot":
@@ -554,7 +551,7 @@ def main_router(selection):
 
 # App Flow Control
 def run_app():
-    selection = st.session_state.get("selected_screen", "🏠 Home")
+    selection = st.session_state.last_selected
     if not st.session_state.logged_in:
         if selection == "🏠 Home":
             home_screen()
