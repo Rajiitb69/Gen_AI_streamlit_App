@@ -475,10 +475,10 @@ if 'selected_screen' not in st.session_state:
     st.session_state.selected_screen = ''
 
 # Sidebar - Option Menu
-st.markdown("""<style>
-                section[data-testid="stSidebar"] {min-width: 300px; max-width: 300px; width: 300px;}
-            </style>""", unsafe_allow_html=True)
 with st.sidebar:
+    st.markdown("""<style>
+                section[data-testid="stSidebar"] {min-width: 400px; max-width: 400px; width: 400px;}
+            </style>""", unsafe_allow_html=True)
     selected = option_menu(
         menu_title="Main Menu",
         options=["🏠 Home", "📊 Excel Analyser", "🔎 RAG-based Chatbot", "💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarization", "✉️ Contact Us"],
