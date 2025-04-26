@@ -368,7 +368,7 @@ def get_layout(tool):
     if "messages" not in st.session_state:
         if tool not in ("📊 Data Analyzer Bot", "🔎 RAG-based Chatbot"):
             # st.title(output_dict['title'])
-            st.markdown(output_dict['header'], , unsafe_allow_html=True)
+            st.markdown(output_dict['header'], unsafe_allow_html=True)
         st.session_state["messages"]=[]
         st.chat_message("assistant").write(output_dict['assistant_content'])
         
