@@ -335,20 +335,6 @@ def data_analysis_uploader():
     elif not uploaded_file:
         st.error(f"Please upload your file")
 
-
-def generic_uploader():
-    user_name = st.session_state.user_name.title()
-    selection = st.session_state.selected_screen
-    # Stylish greeting
-    st.markdown(f"""
-        <div style='text-align: center;'>
-            <h4 style='color:#4CAF50;'>👋 Hi {user_name}!</h4>
-            <p style='font-size:17px;'>You have selected <strong>{selection}</strong> tool, So no need to upload anything</p>
-        </div>""", unsafe_allow_html=True)
-    if st.button("Go ahead"):
-        st.session_state.step = 'main'
-        st.rerun()
-
 def get_layout(tool):
     user_name = st.session_state.user_name.title()
     # logout_sidebar(user_name)
@@ -518,21 +504,6 @@ def login_screen():
                 st.error("Please enter Secret Key")
             else:
                 st.error("Invalid Secret Key")
-
-# # Logout screen
-# def logout_sidebar(user_name):
-#     # Sidebar logout
-#     # Set sidebar width using CSS
-#     st.markdown("""<style>
-#                     section[data-testid="stSidebar"] {min-width: 250px; max-width: 250px; width: 250px;}
-#                 </style>""", unsafe_allow_html=True)
-#     with st.sidebar:
-#         st.markdown("## 👤 User Panel")
-#         st.write(f"Logged in as: **{user_name}**")
-#         if st.button("🔒 Logout"):
-#             for key in list(st.session_state.keys()):
-#                 del st.session_state[key]
-#             st.rerun()
 
 def greeting_screen():
     user = st.session_state.user_name.title()
