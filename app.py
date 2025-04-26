@@ -470,7 +470,7 @@ def get_layout(tool):
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 if 'step' not in st.session_state:
-    st.session_state.step = 'login'
+    st.session_state.step = ''
 if 'user_name' not in st.session_state:
     st.session_state.user_name = ''
 if 'selected_screen' not in st.session_state:
@@ -536,13 +536,9 @@ def greeting_screen():
         </div>
     """, unsafe_allow_html=True)
 
-    st.session_state.step = 'upload'
-    st.rerun()
-
 def upload_screen():
     user = st.session_state.user_name.title()
     selection = st.session_state.get("selected_screen", "📊 Excel Analyser")
-    # logout_sidebar(user)
     if selection == "📊 Excel Analyser":
         data_analysis_uploader()
     elif selection == "🔎 RAG-based Chatbot":
@@ -585,16 +581,16 @@ def main_router():
 
 # App Flow Control
 def run_app():
+    selection = st.session_state.selected_screen
+    if not st.session_state.logged_in:
+        login_screen()
     if st.session_state.logged_in:
-        login_screen()
-    if st.session_state.step == 'login':
-        login_screen()
-    elif st.session_state.step == 'greeting':
-        greeting_screen()
-    elif st.session_state.step == 'upload':
-        upload_screen()
-    elif st.session_state.step == 'main':
-        main_router()
+        if selection == "🏠 Home":
+            greeting_screen()
+        else:
+            upload_screen()
+    elif selection != "🏠 Home":
+        st.warning("🔒 Please login to access other sections.")
 
 # Start app
 run_app()
