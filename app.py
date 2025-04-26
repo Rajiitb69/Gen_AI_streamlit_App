@@ -541,7 +541,7 @@ if not st.session_state.logged_in:
         home_screen()
     elif selection == "✉️ Contact Us":
         st.markdown("""<h4>Welcome to your <span style="color:#FF6F61;">Personal AI Assistant</span> 👨‍💻</h4>""")
-    elif selection in ("🏠 Home", "✉️ Contact Us"):
+    elif selection not in ("🏠 Home", "✉️ Contact Us"):
         login_screen()
         # st.warning("🔒 Please login to access other sections.")
 
