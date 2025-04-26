@@ -515,7 +515,7 @@ def home_screen():
     <p style="font-size: 15px; line-height: 1.6;">
         Welcome to your <strong>Personal AI Assistant</strong> 👨‍💻, a versatile platform designed to empower users with a suite of intelligent tools that simplify complex tasks across various domains. Whether you are analyzing data, exploring documents, writing code, solving mathematical problems, or summarizing information — this app provides an intuitive, seamless experience tailored to your needs.
     </p>
-    <h4 style="font-size: 15px;"><strong>Key Features:</strong></h4>
+    <h4 style="font-size: 17px;"><strong>Key Features:</strong></h4>
     <ul style="font-size: 15px; line-height: 1.8; padding-left: 15px;">
         <li><strong>📊 Excel Analyzer Bot</strong><br>
             Upload your datasets and interactively analyze them by simply asking questions in natural language. Get meaningful insights without writing a single line of code.
@@ -537,7 +537,7 @@ def home_screen():
         This AI-powered application is crafted to <strong>boost productivity</strong>, <strong>enhance learning</strong>, and <strong>streamline problem-solving</strong> — making powerful technology accessible to everyone. Whether you're a student, a professional, or simply curious, this app is your all-in-one digital assistant ready to help you achieve more with ease.
     </p>
     <br>
-<p style="text-align: center; font-size: 15px; color: gray;">
+<p style="text-align: center; font-size: 15px;">
     Developed with ❤️ by <strong>Rajkumar</strong>
 </p>
 </div>
