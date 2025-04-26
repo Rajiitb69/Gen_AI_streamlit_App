@@ -307,15 +307,13 @@ def data_analysis_uploader():
     <h2 style="color: #4CAF50; font-size: 28px; margin-bottom: 0;">
         Welcome to Data Analyzer Bot 🤖
     </h2>
-    <p style="font-size: 17px; margin-top: 5px; color: #555;">
+    <p style="font-size: 17px; margin-top: 5px;">
         Upload your data files, ask anything, and instantly get code, results, and visual charts.
         <br>
         Simplify learning, research, and data exploration with the power of AI! 🚀
     </p>
-    ---
 </div>
     """, unsafe_allow_html=True)
-    st.markdown("Welcome to Excel/CSV Analyzer")
 
     if "data" not in st.session_state:
         st.session_state.data = None
