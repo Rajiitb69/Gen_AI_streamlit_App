@@ -456,7 +456,8 @@ def get_layout(tool):
                 st.error(f"Error running code: {e}")
                     
     elif user_name!='' and groq_api_key and not query:
-        st.warning("Please type a query to get started.")
+        if tool != "📊 Data Analyzer Bot":
+            st.warning("Please type a query to get started.")
 
 # Login
 def login_screen():
