@@ -233,7 +233,6 @@ def rag_chatbot_uploader():
         generate_text_input = st.button("👍 Go Ahead")
     
     user_input = None
-
     if generate_file_input and uploaded_file is not None:
         try:
             with st.spinner("🔄 Uploading..."):
@@ -259,7 +258,7 @@ def rag_chatbot_uploader():
         if not url_input.strip():
             st.error("Please provide the information to get started")
         elif not validators.url(url_input):
-            st.error("Please enter a valid Url. It should be a YT video/Wiki/website url")
+            st.error("Please enter a valid Url. It should be a Wiki/website url")
         else:
             try:
                 with st.spinner("🔄 Uploading..."):
@@ -568,9 +567,6 @@ def run_app():
             upload_screen()
     elif selection != "🏠 Home":
         st.warning("🔒 Please login to access other sections.")
-
-    if st.session_state.step == 'main':
-        main_router(selection)
         
 
 # Start app
