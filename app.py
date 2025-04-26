@@ -539,22 +539,24 @@ with st.sidebar:
             </style>""", unsafe_allow_html=True)
     selected = option_menu(
         menu_title="Main Menu",
-        options=["🏠 Home", "📊 Data Analyzer Bot", "🔎 RAG-based Chatbot", "💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarizer", "✉️ Contact Us"],
+        options=["🏠 Home", "📊 Data Analyzer Bot", "🔎 RAG-based Chatbot", "💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarizer"],
         menu_icon="cast",
         default_index=0,)
     st.markdown("""
-    ---
-    &nbsp;
-    <center>
-    <a href="https://github.com/Rajiitb69/Gen_AI_streamlit_App/">
-    <img src = "https://cdn-icons-png.flaticon.com/512/733/733609.png" width="23"></img></a>
-    
-    <a href="mailto:raj345059@gmail.com">
-    <img src="https://cdn-icons-png.flaticon.com/512/646/646094.png" alt="email" width = "27" ></a>
+                <br>
+                <center style="padding: 0px; margin: 0px;">
+                    <a href="https://github.com/Rajiitb69/Gen_AI_streamlit_App/" target="_blank" style="margin-right: 10px;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/733/733609.png" width="23">
+                    </a>
+                    <a href="mailto:raj345059@gmail.com" style="margin-right: 10px;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/646/646094.png" width="27">
+                    </a>
+                    <a href="https://www.linkedin.com/in/raj-kumar-76b27993/" target="_blank">
+                        <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="27">
+                    </a>
+                </center>
+                """, unsafe_allow_html=True)
 
-    <a href="https://www.linkedin.com/in/raj-kumar-76b27993/" target="_blank">
-    <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" width="27"></a>
-    </center> """, unsafe_allow_html=True)
     
 
 # Check if user changed selection
@@ -571,16 +573,12 @@ selection = st.session_state.last_selected
 if not st.session_state.logged_in:
     if selection == "🏠 Home":
         home_screen()
-    elif selection == "✉️ Contact Us":
-        st.markdown("""<h4>Welcome to your <span style="color:#FF6F61;">Personal AI Assistant</span> 👨‍💻</h4>""")
-    elif selection not in ("🏠 Home", "✉️ Contact Us"):
+    else:
         login_screen()
         # st.warning("🔒 Please login to access other sections.")
 else:
     if selection == "🏠 Home":
         home_screen()
-    elif selection == "✉️ Contact Us":
-        st.markdown("""<h4>Welcome to your <span style="color:#FF6F61;">Personal AI Assistant</span> 👨‍💻</h4>""")
     elif selection in ("💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarizer"):
         without_upload(selection)
     elif selection == "📊 Data Analyzer Bot":
