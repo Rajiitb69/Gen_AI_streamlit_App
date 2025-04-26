@@ -345,8 +345,8 @@ def get_layout(tool):
     user_name = st.session_state.user_name.title()
     # logout_sidebar(user_name)
     output_dict = get_prompt(tool, user_name)
-    st.title(output_dict['title'])
-    output_dict['header']
+    # st.title(output_dict['title'])
+    # output_dict['header']
     query = st.chat_input(placeholder="Write your query?")
     if "messages" not in st.session_state:
         st.session_state["messages"]=[]
