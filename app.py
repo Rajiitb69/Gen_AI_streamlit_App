@@ -536,17 +536,6 @@ def greeting_screen():
         </div>
     """, unsafe_allow_html=True)
 
-def upload_screen():
-    user = st.session_state.user_name.title()
-    selection = st.session_state.get("selected_screen", "📊 Excel Analyser")
-    if selection == "📊 Excel Analyser":
-        data_analysis_uploader()
-    elif selection == "🔎 RAG-based Chatbot":
-        rag_chatbot_uploader()
-    else:
-        generic_uploader()
-        
-
 # Streamlit UI                
 def excel_analyser_screen(selection):
     get_layout(selection)
@@ -562,26 +551,33 @@ def math_assistant_screen(selection):
 
 def text_summarization_screen(selection):
     get_layout(selection)
-    
-# Dispatcher to selected screen
-def main_router():
+
+def upload_screen():
+    user = st.session_state.user_name.title()
     selection = st.session_state.get("selected_screen", "📊 Excel Analyser")
     if selection == "📊 Excel Analyser":
-        excel_analyser_screen(selection)
+        data_analysis_uploader()
     elif selection == "🔎 RAG-based Chatbot":
-        RAG_based_chatbot_screen(selection)
+        rag_chatbot_uploader()
     elif selection == "💻 Code Assistant":
         code_assistant_screen(selection)
     elif selection == "🧮 Math Assistant":
         math_assistant_screen(selection)
     elif selection == "📝 Text Summarization":
         text_summarization_screen(selection)
+    
+# Dispatcher to selected screen
+def main_router(selection):
+    if selection == "📊 Excel Analyser":
+        excel_analyser_screen(selection)
+    elif selection == "🔎 RAG-based Chatbot":
+        RAG_based_chatbot_screen(selection)
     else:
         st.warning("No screen selected.")
 
 # App Flow Control
 def run_app():
-    selection = st.session_state.selected_screen
+    selection = st.session_state.get("selected_screen", "🏠 Home")
     if not st.session_state.logged_in:
         login_screen()
     if st.session_state.logged_in:
@@ -591,6 +587,10 @@ def run_app():
             upload_screen()
     elif selection != "🏠 Home":
         st.warning("🔒 Please login to access other sections.")
+
+    if st.session_state.step == 'main':
+        main_router(selection)
+        
 
 # Start app
 run_app()
