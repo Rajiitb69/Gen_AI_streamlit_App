@@ -302,8 +302,20 @@ def rag_chatbot_uploader():
         st.error(f"Please provide your file/url/text.")
 
 def data_analysis_uploader():
+    st.markdown("""
+    <div style="padding: 10px; text-align: center;">
+    <h2 style="color: #4CAF50; font-size: 28px; margin-bottom: 0;">
+        Welcome to Data Analyzer Bot 🤖
+    </h2>
+    <p style="font-size: 17px; margin-top: 5px; color: #555;">
+        Upload your data files, ask anything, and instantly get code, results, and visual charts.
+        <br>
+        Simplify learning, research, and data exploration with the power of AI! 🚀
+    </p>
+    ---
+</div>
+    """, unsafe_allow_html=True)
     st.markdown("Welcome to Excel/CSV Analyzer")
-    st.title("📁 Upload your Data File")
 
     if "data" not in st.session_state:
         st.session_state.data = None
