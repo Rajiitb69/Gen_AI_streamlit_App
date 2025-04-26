@@ -73,10 +73,10 @@ code_assistant_title = "🤖 Your Coding Assistant"
 code_assistant_header = """
     <div style="padding: 10px; text-align: center;">
     <h2 style="color: #4CAF50;">🤖 Your Coding Assistant</h2>
-    <p style="font-size: 18px; color: #555;">
-        Welcome to your personal Coding Assistant! <br><br>
-        Get instant help with code suggestions, debugging support, and clear explanations across a wide range of programming languages — including Python, Java, C++, JavaScript, SQL, and more.  
-        <br><br>
+    <p style="font-size: 18px;">
+        Welcome to your personal Coding Assistant! <br>
+        Get instant help with code suggestions, debugging support, and clear explanations across a wide range of programming languages — including Python, Java, C++, JavaScript, SQL....  
+        <br>
         Simplify your coding journey with AI-powered assistance! 🚀
     </p>
 </div>
