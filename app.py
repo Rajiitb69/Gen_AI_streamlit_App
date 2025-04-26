@@ -294,10 +294,9 @@ def rag_chatbot_uploader():
             hybrid_retriever = MergerRetriever(retrievers=[dense_retriever, bm25_retriever],
                                        weights=[0.7, 0.3])
             st.session_state.context = user_input
-            st.session_state.documents = documents
             st.session_state.hybrid_retriever = hybrid_retriever
+            st.session_state.retriever_ready = True
             st.success(f"Loaded successfully.")
-            st.session_state.step = 'RAG_based_chatbot_screen'
             st.rerun()
     else:
         st.error(f"Please provide your file/url/text.")
@@ -309,7 +308,6 @@ def data_analysis_uploader():
     if "data" not in st.session_state:
         st.session_state.data = None
         st.session_state.file_name = ""
-        st.session_state.analysis_ready = False
     uploaded_file = st.file_uploader("Upload your Excel or CSV file", type=["xlsx", "xls", "csv"])
     if uploaded_file and st.button("Load File for Analysis"):
         try:
@@ -327,7 +325,6 @@ def data_analysis_uploader():
                 st.session_state.file_name = uploaded_file.name
                 st.session_state.analysis_ready = True
                 st.success(f"Loaded '{uploaded_file.name}' successfully.")
-                st.session_state.step = 'excel_analyser_screen'
                 st.rerun()
         except Exception as e:
                 st.error(f"Failed to load file: {e}")
@@ -454,11 +451,12 @@ def get_layout(tool):
 # Initialize session state
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
-if 'step' not in st.session_state:
-    st.session_state.step = 'home'
 if 'user_name' not in st.session_state:
     st.session_state.user_name = ''
-
+if 'analysis_ready' not in st.session_state:
+    st.session_state.analysis_ready = False
+if 'retriever_ready' not in st.session_state:
+    st.session_state.retriever_ready = False
 if "last_selected" not in st.session_state:
     st.session_state.last_selected = None
 
@@ -493,7 +491,6 @@ def login_screen():
             if secret_key == PASSWORD:
                 st.session_state.logged_in = True
                 st.session_state.user_name = user_name
-                st.session_state.step = 'home'
                 st.rerun()  # To go straight to the main app
             elif user_name == '' or not user_name:
                 st.error("Please enter your Name")
@@ -513,7 +510,6 @@ def home_screen():
             <p style='font-size:17px;'>Choose a tool you'd like to use. We'll ask for further information based on your choice.</p>
         </div>
     """, unsafe_allow_html=True)
-    st.session_state.step = 'upload'
 
 # Streamlit UI                
 def excel_analyser_screen(selection):
@@ -527,28 +523,14 @@ def math_assistant_screen(selection):
 def text_summarization_screen(selection):
     get_layout(selection)
 
-def upload_screen():
+def without_upload(selection):
     user = st.session_state.user_name.title()
-    selection = st.session_state.last_selected
-    if selection == "📊 Excel Analyser":
-        data_analysis_uploader()
-    elif selection == "🔎 RAG-based Chatbot":
-        rag_chatbot_uploader()
-    elif selection == "💻 Code Assistant":
+    if selection == "💻 Code Assistant":
         code_assistant_screen(selection)
     elif selection == "🧮 Math Assistant":
         math_assistant_screen(selection)
     elif selection == "📝 Text Summarization":
         text_summarization_screen(selection)
-    
-# Dispatcher to selected screen
-def main_router(selection):
-    if selection == "📊 Excel Analyser":
-        excel_analyser_screen(selection)
-    elif selection == "🔎 RAG-based Chatbot":
-        RAG_based_chatbot_screen(selection)
-    else:
-        st.warning("No screen selected.")
 
 # App Flow Control
 def run_app():
@@ -558,7 +540,7 @@ def run_app():
             home_screen()
         elif selection == "✉️ Contact Us":
             st.markdown("""<h4>Welcome to your <span style="color:#FF6F61;">Personal AI Assistant</span> 👨‍💻</h4>""")
-        elif selection not in ("🏠 Home", "✉️ Contact Us"):
+        elif selection in ("🏠 Home", "✉️ Contact Us"):
             login_screen()
             # st.warning("🔒 Please login to access other sections.")
 
@@ -567,13 +549,20 @@ def run_app():
             home_screen()
         elif selection == "✉️ Contact Us":
             st.markdown("""<h4>Welcome to your <span style="color:#FF6F61;">Personal AI Assistant</span> 👨‍💻</h4>""")
-        elif selection not in ("🏠 Home", "✉️ Contact Us"):
-            upload_screen()
-        if st.session_state.step == 'excel_analyser_screen':
-            excel_analyser_screen(selection)
-        elif st.session_state.step == 'RAG_based_chatbot_screen':
-            RAG_based_chatbot_screen(selection)
-        
+        elif selection in ("💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarization"):
+            without_upload(selection)
+        elif selection == "📊 Excel Analyser":
+            if not st.session_state.analysis_ready:
+                data_analysis_uploader()
+            else:
+                excel_analyser_screen(selection)
+        elif selection == "🔎 RAG-based Chatbot":
+            if not st.session_state.retriever_ready:
+                rag_chatbot_uploader()
+            else:
+                RAG_based_chatbot_screen(selection)
+    else:
+        st.error("No option Selected")
 
 # Start app
 run_app()
