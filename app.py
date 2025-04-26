@@ -213,8 +213,20 @@ def get_prompt(tool, user_name):
     return output_dict
     
 def rag_chatbot_uploader():
-    st.markdown("Welcome to **RAG-Based Chatbot!**")
-    st.write("Choose any option to upload your document which will be act as a retriever whiling generating response from LLM.")
+    st.markdown("""
+                <div style="padding: 10px; text-align: center;">
+            <h2 style="color: #4CAF50; font-size: 28px; margin-bottom: 0;">
+                Welcome to the RAG-Based Chatbot! 🤖
+            </h2>
+            <p style="font-size: 17px; margin-top: 5px; color: #555;">
+                Upload your documents using any of the available options.
+                <br>
+                Your files will act as a retriever to generate accurate and context-aware responses from the Language Model (LLM).
+                <br><br>
+                Empower your conversations with knowledge-driven AI! 🚀
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
     tab1, tab2, tab3 = st.tabs(["Upload a File", "Enter Website URL", "Enter Text Manually"])
     user_input = None
 
@@ -298,14 +310,14 @@ def rag_chatbot_uploader():
             st.session_state.retriever_ready = True
             st.success(f"Loaded successfully.")
             st.rerun()
-    else:
-        st.error(f"Please provide your file/url/text.")
+    # else:
+    #     st.error(f"Please provide your file/url/text.")
 
 def data_analysis_uploader():
     st.markdown("""
     <div style="padding: 10px; text-align: center;">
     <h2 style="color: #4CAF50; font-size: 28px; margin-bottom: 0;">
-        Welcome to Data Analyzer Bot 🤖
+        Welcome to Data Analyzer Bot! 🤖
     </h2>
     <p style="font-size: 17px; margin-top: 5px;">
         Upload your data files, ask anything, and instantly get code, results, and visual charts.
