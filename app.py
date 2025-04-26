@@ -156,7 +156,6 @@ RESPONSE FORMAT:
 ALWAYS follow the user's latest instruction accurately and without deviation.
 """
 
-
 Excel_Analyser_title = "🤖 Your Excel Analyser"
 Excel_Analyser_header = """
     Welcome to your personal **Excel Analyser**!
@@ -351,7 +350,7 @@ def generic_uploader():
 
 def get_layout(tool):
     user_name = st.session_state.user_name.title()
-    logout_sidebar(user_name)
+    # logout_sidebar(user_name)
     output_dict = get_prompt(tool, user_name)
     st.title(output_dict['title'])
     output_dict['header']
@@ -474,6 +473,16 @@ if 'user_name' not in st.session_state:
 if 'selected_screen' not in st.session_state:
     st.session_state.selected_screen = ''
 
+# Sidebar - Option Menu
+with st.sidebar:
+    selected = option_menu(
+        menu_title="Main Menu",
+        options=["Home", "Excel Analyser", "RAG-based Chatbot", "Code Assistant", "Math Assistant", "Text Summarization", "Contact Us"],
+        icons=["house", "📊", "🔎", "💻", "🧮", "📝", "envelope"],
+        menu_icon="cast",
+        default_index=0,
+    )
+
 # Login
 def login_screen():
     st.title("🔐 Login")
@@ -511,7 +520,7 @@ def logout_sidebar(user_name):
 
 def greeting_screen():
     user = st.session_state.user_name.title()
-    logout_sidebar(user)
+    # logout_sidebar(user)
     # Stylish greeting
     st.markdown(f"""
         <div style='text-align: center;'>
@@ -538,7 +547,7 @@ def greeting_screen():
 def upload_screen():
     user = st.session_state.user_name.title()
     selection = st.session_state.get("selected_screen", "📊 Excel Analyser")
-    logout_sidebar(user)
+    # logout_sidebar(user)
     if selection == "📊 Excel Analyser":
         data_analysis_uploader()
     elif selection == "🔎 RAG-based Chatbot":
