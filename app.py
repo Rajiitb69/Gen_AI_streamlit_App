@@ -542,7 +542,7 @@ with st.sidebar:
         options=["🏠 Home", "📊 Data Analyzer Bot", "🔎 RAG-based Chatbot", "💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarizer", "✉️ Contact Us"],
         menu_icon="cast",
         default_index=0,)
-    st.markdown(""" 
+    st.markdown("""
     ---
     &nbsp;
     <center>
@@ -554,7 +554,7 @@ with st.sidebar:
 
     <a href="https://www.linkedin.com/in/raj-kumar-76b27993/" target="_blank">
     <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" width="27"></a>
-    </center> """)
+    </center> """, unsafe_allow_html=True)
     
 
 # Check if user changed selection
