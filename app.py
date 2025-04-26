@@ -477,7 +477,7 @@ if 'selected_screen' not in st.session_state:
 # Sidebar - Option Menu
 with st.sidebar:
     st.markdown("""<style>
-                section[data-testid="stSidebar"] {min-width: 300px; max-width: 300px; width: 300px;}
+                section[data-testid="stSidebar"] {min-width: 350px; max-width: 350px; width: 350px;}
             </style>""", unsafe_allow_html=True)
     selected = option_menu(
         menu_title="Main Menu",
