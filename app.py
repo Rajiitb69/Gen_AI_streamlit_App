@@ -454,14 +454,13 @@ def get_layout(tool):
 # Initialize session state
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
-if 'step' not in st.session_state:
-    st.session_state.step = 'login'
+
 if 'user_name' not in st.session_state:
     st.session_state.user_name = ''
 if 'selected_screen' not in st.session_state:
-    st.session_state.selected_screen = ''
+    st.session_state.selected_screen = "🏠 Home"
 if "previous_selection" not in st.session_state:
-    st.session_state.previous_selection = "Home"
+    st.session_state.previous_selection = "🏠 Home"
 
 # Sidebar - Option Menu
 with st.sidebar:
@@ -556,20 +555,25 @@ def main_router(selection):
 def run_app():
     selection = st.session_state.get("selected_screen", "🏠 Home")
     if not st.session_state.logged_in:
-        login_screen()
-    if st.session_state.logged_in:
-        if st.session_state.step == 'home':
+        if selection == "🏠 Home":
             home_screen()
-        elif (selection != "🏠 Home") and (st.session_state.step == 'upload'):
-            upload_screen()
         elif selection == "✉️ Contact Us":
             st.markdown("""<h4>Welcome to your <span style="color:#FF6F61;">Personal AI Assistant</span> 👨‍💻</h4>""")
+        elif selection not in ("🏠 Home", "✉️ Contact Us"):
+            login_screen()
+            # st.warning("🔒 Please login to access other sections.")
+
+    if st.session_state.logged_in:
+        if selection == "🏠 Home":
+            home_screen()
+        elif selection == "✉️ Contact Us":
+            st.markdown("""<h4>Welcome to your <span style="color:#FF6F61;">Personal AI Assistant</span> 👨‍💻</h4>""")
+        elif selection not in ("🏠 Home", "✉️ Contact Us"):
+            upload_screen()
         if st.session_state.step == 'excel_analyser_screen':
             excel_analyser_screen(selection)
         elif st.session_state.step == 'RAG_based_chatbot_screen':
             RAG_based_chatbot_screen(selection)
-    elif selection not in ("🏠 Home", "✉️ Contact Us"):
-        st.warning("🔒 Please login to access other sections.")
         
 
 # Start app
