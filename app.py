@@ -455,7 +455,7 @@ def get_layout(tool):
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 if 'step' not in st.session_state:
-    st.session_state.step = ''
+    st.session_state.step = 'login'
 if 'user_name' not in st.session_state:
     st.session_state.user_name = ''
 if 'selected_screen' not in st.session_state:
@@ -470,7 +470,7 @@ with st.sidebar:
             </style>""", unsafe_allow_html=True)
     selected = option_menu(
         menu_title="Main Menu",
-        options=["🏠 Home", "📊 Excel Analyser", "🔎 RAG-based Chatbot", "💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarization", "ℹ️ About App", "✉️ Contact Us"],
+        options=["🏠 Home", "📊 Excel Analyser", "🔎 RAG-based Chatbot", "💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarization", "✉️ Contact Us"],
         menu_icon="cast",
         default_index=0,)
     st.session_state.selected_screen = selected
@@ -495,7 +495,7 @@ def login_screen():
             if secret_key == PASSWORD:
                 st.session_state.logged_in = True
                 st.session_state.user_name = user_name
-                st.session_state.step = 'greeting'
+                st.session_state.step = 'home'
                 st.rerun()  # To go straight to the main app
             elif user_name == '' or not user_name:
                 st.error("Please enter your Name")
@@ -504,7 +504,7 @@ def login_screen():
             else:
                 st.error("Invalid Secret Key")
 
-def greeting_screen():
+def home_screen():
     user = st.session_state.user_name.title()
     # logout_sidebar(user)
     # Stylish greeting
@@ -515,20 +515,17 @@ def greeting_screen():
             <p style='font-size:17px;'>Choose a tool you'd like to use. We'll ask for further information based on your choice.</p>
         </div>
     """, unsafe_allow_html=True)
+    st.session_state.step = 'upload'
 
 # Streamlit UI                
 def excel_analyser_screen(selection):
     get_layout(selection)
-
 def RAG_based_chatbot_screen(selection):
     get_layout(selection)
-
 def code_assistant_screen(selection):
     get_layout(selection)
-
 def math_assistant_screen(selection):
     get_layout(selection)
-
 def text_summarization_screen(selection):
     get_layout(selection)
 
@@ -561,15 +558,17 @@ def run_app():
     if not st.session_state.logged_in:
         login_screen()
     if st.session_state.logged_in:
-        if selection == "🏠 Home":
-            greeting_screen()
-        else:
+        if st.session_state.step == 'home':
+            home_screen()
+        elif (selection != "🏠 Home") and (st.session_state.step == 'upload'):
             upload_screen()
+        elif selection == "✉️ Contact Us":
+            st.markdown("""<h4>Welcome to your <span style="color:#FF6F61;">Personal AI Assistant</span> 👨‍💻</h4>""")
         if st.session_state.step == 'excel_analyser_screen':
             excel_analyser_screen(selection)
         elif st.session_state.step == 'RAG_based_chatbot_screen':
             RAG_based_chatbot_screen(selection)
-    elif selection != "🏠 Home":
+    elif selection not in ("🏠 Home", "✉️ Contact Us"):
         st.warning("🔒 Please login to access other sections.")
         
 
