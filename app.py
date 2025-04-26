@@ -157,9 +157,9 @@ RESPONSE FORMAT:
 ALWAYS follow the user's latest instruction accurately and without deviation.
 """
 
-Excel_Analyser_title = "🤖 Your Excel Analyser"
+Excel_Analyser_title = "🤖 Your Data Analyzer Bot"
 Excel_Analyser_header = """
-    Welcome to your personal **Excel Analyser**!
+    Welcome to your personal **Data Analyzer Bot**!
     Generate the code in seconds. 
     Just paste the query, and get code! 💡
     """
@@ -194,15 +194,15 @@ def get_prompt(tool, user_name):
         header = math_assistant_header
         assistant_content = f"Hi {user_name}, I'm a math assistant. How can I help you?"
         system_prompt = math_assistant_prompt
-    elif tool == "📝 Text Summarization":
+    elif tool == "📝 Text Summarizer":
         title = text_summarization_title
         header = text_summarization_header
         assistant_content = f"Hi {user_name}, I'm a Text Summarizer. How can I help you?"
         system_prompt = text_summarization_prompt
-    elif tool == "📊 Excel Analyser":
+    elif tool == "📊 Data Analyzer Bot":
         title = Excel_Analyser_title
         header = Excel_Analyser_header
-        assistant_content = f"Hi {user_name}, I'm a Excel Analyser. How can I help you?"
+        assistant_content = f"Hi {user_name}, I'm a Data Analyzer Bot. How can I help you?"
         system_prompt = Excel_Analyser_prompt
     elif tool == "🔎 RAG-based Chatbot":
         title = Rag_chatbot_title
@@ -342,7 +342,7 @@ def get_layout(tool):
         st.session_state["messages"]=[]
         st.chat_message("assistant").write(output_dict['assistant_content'])
         
-        if tool == "📊 Excel Analyser":
+        if tool == "📊 Data Analyzer Bot":
             df = st.session_state.data
             st.chat_message("assistant").write("Here's a quick preview of your uploaded data:")
             st.chat_message("assistant").dataframe(df.head())    
@@ -365,7 +365,7 @@ def get_layout(tool):
                 chat_history.append(AIMessage(content=msg["content"]))
     
         # Prompt template with username
-        if tool == "📊 Excel Analyser":
+        if tool == "📊 Data Analyzer Bot":
             df = st.session_state.data
             prompt_template = ChatPromptTemplate.from_messages([
             ("system", output_dict['system_prompt']),
@@ -405,7 +405,7 @@ def get_layout(tool):
         with st.chat_message("assistant"):
             st_cb=StreamlitCallbackHandler(st.container(),expand_new_thoughts=False)
             response=chain.invoke({"input": query,"chat_history": chat_history}, callbacks=[st_cb])
-            if tool == "📊 Excel Analyser":
+            if tool == "📊 Data Analyzer Bot":
                 final_answer = response.content.strip('```python').strip("```").strip('python').strip('`')
                 st.code(final_answer, language="python")
                 # st.write(final_answer)
@@ -416,7 +416,7 @@ def get_layout(tool):
                 final_answer = response.content if hasattr(response, "content") else str(response)
                 st.write(final_answer)
             st.session_state.messages.append({'role': 'assistant', "content": final_answer})
-        if tool == "📊 Excel Analyser":
+        if tool == "📊 Data Analyzer Bot":
             # Safe execution (use caution in production)
             try:
                 df_numeric = df.copy()
@@ -474,7 +474,7 @@ def home_screen():
     <p style="font-size: 17px; line-height: 1.6;">
         Welcome to your <strong>Personal AI Assistant</strong> 👨‍💻, a versatile platform designed to empower users with a suite of intelligent tools that simplify complex tasks across various domains. Whether you are analyzing data, exploring documents, writing code, solving mathematical problems, or summarizing information — this app provides an intuitive, seamless experience tailored to your needs.
     </p>
-    <h4 style="color: #4CAF50;">Key Features:</h4>
+    <h4><strong>Key Features:</strong></h4>
     <ul style="font-size: 17px; line-height: 1.8; padding-left: 20px;">
         <li><strong>📊 Excel Analyzer Bot</strong><br>
             Upload your datasets and interactively analyze them by simply asking questions in natural language. Get meaningful insights without writing a single line of code.
@@ -485,11 +485,9 @@ def home_screen():
         <li><strong>💻 Code Assistant</strong><br>
             Get instant help with programming questions across multiple languages. Whether it's debugging, code generation, or understanding complex concepts, your coding companion is here.
         </li>
-        <br>
         <li><strong>🧮 Math Assistant</strong><br>
             Solve mathematical problems effortlessly — from basic arithmetic to advanced equations. Simply state your math query and receive accurate solutions.
         </li>
-        <br>
         <li><strong>📝 Text Summarizer</strong><br>
             Submit lengthy text passages and receive concise, well-structured summaries, helping you grasp the key points faster and more efficiently.
         </li>
@@ -518,7 +516,7 @@ def without_upload(selection):
         code_assistant_screen(selection)
     elif selection == "🧮 Math Assistant":
         math_assistant_screen(selection)
-    elif selection == "📝 Text Summarization":
+    elif selection == "📝 Text Summarizer":
         text_summarization_screen(selection)
 
 # Initialize session state
@@ -541,9 +539,23 @@ with st.sidebar:
             </style>""", unsafe_allow_html=True)
     selected = option_menu(
         menu_title="Main Menu",
-        options=["🏠 Home", "📊 Excel Analyser", "🔎 RAG-based Chatbot", "💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarization", "✉️ Contact Us"],
+        options=["🏠 Home", "📊 Data Analyzer Bot", "🔎 RAG-based Chatbot", "💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarizer", "✉️ Contact Us"],
         menu_icon="cast",
         default_index=0,)
+    st.markdown(""" 
+    ---
+    &nbsp;
+    <center>
+    <a href="https://github.com/Rajiitb69/Gen_AI_streamlit_App/">
+    <img src = "https://cdn-icons-png.flaticon.com/512/733/733609.png" width="23"></img></a>
+    
+    <a href="mailto:raj345059@gmail.com">
+    <img src="https://cdn-icons-png.flaticon.com/512/646/646094.png" alt="email" width = "27" ></a>
+
+    <a href="https://www.linkedin.com/in/raj-kumar-76b27993/" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" width="27"></a>
+    </center> """)
+    
 
 # Check if user changed selection
 if selected != st.session_state.last_selected:
@@ -569,9 +581,9 @@ else:
         home_screen()
     elif selection == "✉️ Contact Us":
         st.markdown("""<h4>Welcome to your <span style="color:#FF6F61;">Personal AI Assistant</span> 👨‍💻</h4>""")
-    elif selection in ("💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarization"):
+    elif selection in ("💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarizer"):
         without_upload(selection)
-    elif selection == "📊 Excel Analyser":
+    elif selection == "📊 Data Analyzer Bot":
         if not st.session_state.analysis_ready:
             data_analysis_uploader()
         else:
