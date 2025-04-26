@@ -461,7 +461,7 @@ if 'user_name' not in st.session_state:
 if 'selected_screen' not in st.session_state:
     st.session_state.selected_screen = "🏠 Home"
 if "previous_selection" not in st.session_state:
-    st.session_state.previous_selection = "🏠 Home"
+    st.session_state.previous_selection = None
 
 # Sidebar - Option Menu
 with st.sidebar:
@@ -477,7 +477,7 @@ with st.sidebar:
 
 # Check if user changed selection
 if st.session_state.selected_screen != st.session_state.previous_selection:
-    keys_to_keep = ["logged_in", "user_name", "previous_selection"]  # things you want to keep
+    keys_to_keep = ["logged_in", "user_name"]  # things you want to keep
     keys_to_delete = [key for key in st.session_state.keys() if key not in keys_to_keep]
     for key in keys_to_delete:
         del st.session_state[key]
