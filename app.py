@@ -478,8 +478,7 @@ if 'selected_screen' not in st.session_state:
 with st.sidebar:
     selected = option_menu(
         menu_title="Main Menu",
-        options=["Home", "Excel Analyser", "RAG-based Chatbot", "Code Assistant", "Math Assistant", "Text Summarization", "Contact Us"],
-        icons=["house", "📊", "🔎", "💻", "🧮", "📝", "envelope"],
+        options=["🏠 Home", "📊 Excel Analyser", "🔎 RAG-based Chatbot", "💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarization", "✉️ Contact Us"],
         menu_icon="cast",
         default_index=0,
     )
@@ -504,20 +503,20 @@ def login_screen():
             else:
                 st.error("Invalid Secret Key")
 
-# Logout screen
-def logout_sidebar(user_name):
-    # Sidebar logout
-    # Set sidebar width using CSS
-    st.markdown("""<style>
-                    section[data-testid="stSidebar"] {min-width: 250px; max-width: 250px; width: 250px;}
-                </style>""", unsafe_allow_html=True)
-    with st.sidebar:
-        st.markdown("## 👤 User Panel")
-        st.write(f"Logged in as: **{user_name}**")
-        if st.button("🔒 Logout"):
-            for key in list(st.session_state.keys()):
-                del st.session_state[key]
-            st.rerun()
+# # Logout screen
+# def logout_sidebar(user_name):
+#     # Sidebar logout
+#     # Set sidebar width using CSS
+#     st.markdown("""<style>
+#                     section[data-testid="stSidebar"] {min-width: 250px; max-width: 250px; width: 250px;}
+#                 </style>""", unsafe_allow_html=True)
+#     with st.sidebar:
+#         st.markdown("## 👤 User Panel")
+#         st.write(f"Logged in as: **{user_name}**")
+#         if st.button("🔒 Logout"):
+#             for key in list(st.session_state.keys()):
+#                 del st.session_state[key]
+#             st.rerun()
 
 def greeting_screen():
     user = st.session_state.user_name.title()
