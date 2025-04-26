@@ -297,7 +297,7 @@ def rag_chatbot_uploader():
             st.session_state.documents = documents
             st.session_state.hybrid_retriever = hybrid_retriever
             st.success(f"Loaded successfully.")
-            st.session_state.step = 'main'
+            st.session_state.step = 'RAG_based_chatbot_screen'
             st.rerun()
     else:
         st.error(f"Please provide your file/url/text.")
@@ -327,7 +327,7 @@ def data_analysis_uploader():
                 st.session_state.file_name = uploaded_file.name
                 st.session_state.analysis_ready = True
                 st.success(f"Loaded '{uploaded_file.name}' successfully.")
-                st.session_state.step = 'main'
+                st.session_state.step = 'excel_analyser_screen'
                 st.rerun()
         except Exception as e:
                 st.error(f"Failed to load file: {e}")
@@ -565,6 +565,10 @@ def run_app():
             greeting_screen()
         else:
             upload_screen()
+        if st.session_state.step == 'excel_analyser_screen':
+            excel_analyser_screen(selection)
+        elif st.session_state.step == 'RAG_based_chatbot_screen':
+            RAG_based_chatbot_screen(selection)
     elif selection != "🏠 Home":
         st.warning("🔒 Please login to access other sections.")
         
