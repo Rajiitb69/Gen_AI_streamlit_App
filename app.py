@@ -561,8 +561,6 @@ def run_app():
                 rag_chatbot_uploader()
             else:
                 RAG_based_chatbot_screen(selection)
-    else:
-        st.error("No option Selected")
 
 # Start app
 run_app()
