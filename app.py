@@ -507,7 +507,7 @@ if "logged_in" not in st.session_state:
 if 'user_name' not in st.session_state:
     st.session_state.user_name = ''
 if "last_selected" not in st.session_state:
-    st.session_state.last_selected = ''
+    st.session_state.last_selected = "🏠 Home"
 if 'analysis_ready' not in st.session_state:
     st.session_state.analysis_ready = False
 if 'retriever_ready' not in st.session_state:
@@ -544,22 +544,21 @@ if not st.session_state.logged_in:
     elif selection not in ("🏠 Home", "✉️ Contact Us"):
         login_screen()
         # st.warning("🔒 Please login to access other sections.")
-
-# else:
-#     if selection == "🏠 Home":
-#         home_screen()
-#     elif selection == "✉️ Contact Us":
-#         st.markdown("""<h4>Welcome to your <span style="color:#FF6F61;">Personal AI Assistant</span> 👨‍💻</h4>""")
-#     elif selection in ("💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarization"):
-#         without_upload(selection)
-#     elif selection == "📊 Excel Analyser":
-#         if not st.session_state.analysis_ready:
-#             data_analysis_uploader()
-#         else:
-#             excel_analyser_screen(selection)
-#     elif selection == "🔎 RAG-based Chatbot":
-#         if not st.session_state.retriever_ready:
-#             rag_chatbot_uploader()
-#         else:
-#             RAG_based_chatbot_screen(selection)
+else:
+    if selection == "🏠 Home":
+        home_screen()
+    elif selection == "✉️ Contact Us":
+        st.markdown("""<h4>Welcome to your <span style="color:#FF6F61;">Personal AI Assistant</span> 👨‍💻</h4>""")
+    elif selection in ("💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarization"):
+        without_upload(selection)
+    elif selection == "📊 Excel Analyser":
+        if not st.session_state.analysis_ready:
+            data_analysis_uploader()
+        else:
+            excel_analyser_screen(selection)
+    elif selection == "🔎 RAG-based Chatbot":
+        if not st.session_state.retriever_ready:
+            rag_chatbot_uploader()
+        else:
+            RAG_based_chatbot_screen(selection)
 
