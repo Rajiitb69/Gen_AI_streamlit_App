@@ -469,15 +469,37 @@ def login_screen():
                 st.error("Invalid Secret Key")
 
 def home_screen():
-    user = st.session_state.user_name.title()
-    # logout_sidebar(user)
-    # Stylish greeting
     st.markdown(f"""
-        <div style='text-align: center;'>
-            <h1 style='color:#4CAF50;'>👋 Hi {user}!</h1>
-            <h4>Welcome to your <span style="color:#FF6F61;">Personal AI Assistant</span> 👨‍💻</h4>
-            <p style='font-size:17px;'>Choose a tool you'd like to use. We'll ask for further information based on your choice.</p>
-        </div>
+        <div style="padding: 20px; font-family: Arial, sans-serif;">
+    <p style="font-size: 17px; line-height: 1.6;">
+        Welcome to your <strong>Personal AI Assistant</strong> 👨‍💻, a versatile platform designed to empower users with a suite of intelligent tools that simplify complex tasks across various domains. Whether you are analyzing data, exploring documents, writing code, solving mathematical problems, or summarizing information — this app provides an intuitive, seamless experience tailored to your needs.
+    </p>
+    <h2 style="color: #FF6F61;">Key Features:</h2>
+    <ul style="font-size: 17px; line-height: 1.8; padding-left: 20px;">
+        <li><strong>📊 Excel Analyzer Bot</strong><br>
+            Upload your datasets and interactively analyze them by simply asking questions in natural language. Get meaningful insights without writing a single line of code.
+        </li>
+        <br>
+        <li><strong>🔎 RAG-based Chatbot</strong><br>
+            Upload documents in various formats and engage in intelligent, context-aware conversations. Ask detailed questions about your files and receive precise, AI-driven answers.
+        </li>
+        <br>
+        <li><strong>💻 Code Assistant</strong><br>
+            Get instant help with programming questions across multiple languages. Whether it's debugging, code generation, or understanding complex concepts, your coding companion is here.
+        </li>
+        <br>
+        <li><strong>🧮 Math Assistant</strong><br>
+            Solve mathematical problems effortlessly — from basic arithmetic to advanced equations. Simply state your math query and receive accurate solutions.
+        </li>
+        <br>
+        <li><strong>📝 Text Summarizer</strong><br>
+            Submit lengthy text passages and receive concise, well-structured summaries, helping you grasp the key points faster and more efficiently.
+        </li>
+    </ul>
+    <p style="font-size: 17px; line-height: 1.6;">
+        This AI-powered application is crafted to <strong>boost productivity</strong>, <strong>enhance learning</strong>, and <strong>streamline problem-solving</strong> — making powerful technology accessible to everyone. Whether you're a student, a professional, or simply curious, this app is your all-in-one digital assistant ready to help you achieve more with ease.
+    </p>
+</div>
     """, unsafe_allow_html=True)
 
 # Streamlit UI                
