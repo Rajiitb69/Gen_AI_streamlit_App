@@ -72,7 +72,7 @@ Your reply style should be:
 code_assistant_title = "🤖 Your Coding Assistant"
 code_assistant_header = """
     <div style="padding: 10px; text-align: center;">
-    <h2 style="color: #4CAF50;">🤖 Your Coding Assistant</h2>
+    <h2 style="color: #4CAF50; font-size: 28px; margin-bottom: 0;">🤖 Your Coding Assistant</h2>
     <p style="font-size: 18px;">
         Welcome to your personal Coding Assistant! <br>
         Get instant help with code suggestions, debugging support, and clear explanations across a wide range of programming languages — including Python, Java, C++, JavaScript, SQL....  
@@ -96,8 +96,15 @@ Let’s begin solving the problem.
 """
 math_assistant_title = "🤖 Your Math Assistant"
 math_assistant_header = """
-    Welcome to your personal **Math Assistant**!
-    Just type your question and let the assistant guide you through the solution! 💡
+    <div style="padding: 10px; text-align: center;">
+    <h2 style="color: #4CAF50; font-size: 28px; margin-bottom: 0;">🤖 Your Math Assistant</h2>
+    <p style="font-size: 18px;">
+        Welcome to your personal Math Assistant!<br>
+        Simply type your math question, and let the assistant guide you step-by-step through the solution.  
+        <br>
+        Make problem-solving easier and smarter with AI! 💡
+    </p>
+</div>
     """
 text_summarization_prompt = """
 You are an expert language assistant helping a user named {username}.
@@ -115,9 +122,15 @@ Let’s get started with the summarization.
 """
 text_summarization_title = "🤖 Your Text Summarizer"
 text_summarization_header = """
-    Welcome to your personal **Text Summarizer**!
-    Summarize articles, emails, reports, or any text in seconds. 
-    Just paste the content, and get a clear, concise summary! 💡
+    <div style="padding: 10px; text-align: center;">
+    <h2 style="color: #4CAF50; font-size: 28px; margin-bottom: 0;">📝 Your Text Summarizer</h2>
+    <p style="font-size: 18px;">
+        Welcome to your personal Text Summarizer!<br>
+        Effortlessly condense articles, emails, reports, or any text into clear and concise summaries — all within seconds.  
+        <br>
+        Just paste your content and let AI do the rest! 💡
+    </p>
+</div>
     """
 Excel_Analyser_prompt = """
 You are a helpful and friendly data analyst assisting a user named {username}. The user has uploaded a data file, which is already loaded into a Pandas DataFrame named `df`.
@@ -225,7 +238,7 @@ def rag_chatbot_uploader():
             <h2 style="color: #4CAF50; font-size: 28px; margin-bottom: 0;">
                 Welcome to the RAG-Based Chatbot! 🤖
             </h2>
-            <p style="font-size: 17px; margin-top: 5px; color: #555;">
+            <p style="font-size: 17px; margin-top: 5px;">
                 Upload your documents to serve as retrievers for generating accurate, context-aware responses from the Language Model (LLM).
                 <br>
                 Empower your conversations with knowledge-driven AI! 🚀
