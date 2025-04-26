@@ -544,7 +544,7 @@ def run_app():
             login_screen()
             # st.warning("🔒 Please login to access other sections.")
 
-    if st.session_state.logged_in:
+    else:
         if selection == "🏠 Home":
             home_screen()
         elif selection == "✉️ Contact Us":
