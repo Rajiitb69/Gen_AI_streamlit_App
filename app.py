@@ -474,17 +474,18 @@ with st.sidebar:
         default_index=0,)
 
 # Check if user changed selection
-keys_to_keep = ["logged_in", "user_name"]  # things you want to keep
-keys_to_delete = [key for key in st.session_state.keys() if key not in keys_to_keep]
-for key in keys_to_delete:
-    del st.session_state[key]
-st.session_state.last_selected = selected
+if selected != st.session_state.last_selected or "force_refresh" not in st.session_state:
+    st.session_state.last_selected = selected
+    keys_to_keep = ["logged_in", "user_name","last_selected"]  # things you want to keep
+    keys_to_delete = [key for key in st.session_state.keys() if key not in keys_to_keep]
+    for key in keys_to_delete:
+        del st.session_state[key]
 
-if "just_cleared" not in st.session_state:
-    st.session_state.just_cleared = True
+    st.session_state.force_refresh = True
     st.rerun()
-else:
-    del st.session_state.just_cleared
+# After rerun, remove force_refresh so next click triggers again
+if "force_refresh" in st.session_state:
+    del st.session_state.force_refresh
 
 # Login
 def login_screen():
