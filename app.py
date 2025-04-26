@@ -539,7 +539,7 @@ if 'retriever_ready' not in st.session_state:
 # Sidebar - Option Menu
 with st.sidebar:
     st.markdown("""<style>
-                section[data-testid="stSidebar"] {min-width: 330px; max-width: 330px; width: 330px;}
+                section[data-testid="stSidebar"] {min-width: 350px; max-width: 350px; width: 350px;}
             </style>""", unsafe_allow_html=True)
     selected = option_menu(
         menu_title="Main Menu",
