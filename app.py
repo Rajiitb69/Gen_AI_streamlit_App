@@ -219,10 +219,8 @@ def rag_chatbot_uploader():
                 Welcome to the RAG-Based Chatbot! 🤖
             </h2>
             <p style="font-size: 17px; margin-top: 5px; color: #555;">
-                Upload your documents using any of the available options.
+                Upload your documents to serve as retrievers for generating accurate, context-aware responses from the Language Model (LLM).
                 <br>
-                Your files will act as a retriever to generate accurate and context-aware responses from the Language Model (LLM).
-                <br><br>
                 Empower your conversations with knowledge-driven AI! 🚀
             </p>
         </div>
