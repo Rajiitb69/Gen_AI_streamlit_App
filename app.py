@@ -459,7 +459,7 @@ if 'step' not in st.session_state:
 if 'user_name' not in st.session_state:
     st.session_state.user_name = ''
 
-if "previous_selection" not in st.session_state:
+if "last_selected" not in st.session_state:
     st.session_state.last_selected = None
 
 # Sidebar - Option Menu
