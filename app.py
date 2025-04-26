@@ -481,10 +481,10 @@ if selected != st.session_state.last_selected or "force_refresh" not in st.sessi
     for key in keys_to_delete:
         del st.session_state[key]
 
+if "force_refresh" not in st.session_state:
     st.session_state.force_refresh = True
     st.rerun()
-# After rerun, remove force_refresh so next click triggers again
-if "force_refresh" in st.session_state:
+else:
     del st.session_state.force_refresh
 
 # Login
