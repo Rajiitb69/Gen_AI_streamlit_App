@@ -227,7 +227,8 @@ def rag_chatbot_uploader():
         """, unsafe_allow_html=True)
     tab1, tab2, tab3 = st.tabs(["Upload a File", "Enter Website URL", "Enter Text Manually"])
     user_input = None
-
+    # Center align using columns
+    col1, col2, col3 = st.columns([1,2,1])
     with tab1:
         uploaded_file = st.file_uploader("Upload a pdf/docs/txt file", type=["pdf", "docx", "txt"])
         generate_file_input = st.button("📂 Load file")
@@ -243,73 +244,74 @@ def rag_chatbot_uploader():
         generate_text_input = st.button("👍 Go Ahead")
     
     user_input = None
-    if generate_file_input and uploaded_file is not None:
-        try:
-            with st.spinner("🔄 Uploading..."):
-                file_type = uploaded_file.type
-                if file_type == "text/plain":
-                    user_input = str(uploaded_file.read(), "utf-8")
-                elif file_type == "application/pdf":
-                    pdfreader = PdfReader(uploaded_file)
-                    user_input = ''
-                    for i, page in enumerate(pdfreader.pages):
-                        content = page.extract_text()
-                        if content:
-                            user_input += content
-                elif (file_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"):
-                    doc = docx.Document(uploaded_file)
-                    user_input = "\n".join([para.text for para in doc.paragraphs])
-        except Exception as e:
-            st.exception(f"Exception:{e}")
-    elif generate_text_input and text_input:
-        user_input = text_input
-    
-    elif generate_url_input and url_input:
-        if not url_input.strip():
-            st.error("Please provide the information to get started")
-        elif not validators.url(url_input):
-            st.error("Please enter a valid Url. It should be a Wiki/website url")
-        else:
+    with col2:
+        if generate_file_input and uploaded_file is not None:
             try:
                 with st.spinner("🔄 Uploading..."):
-                    if "en.wikipedia.org" in url_input:
-                        query = url_input.split("/")[-1]
-                        loader = WikipediaLoader(query=query, load_max_docs=2)
-                    else:
-                        loader=UnstructuredURLLoader(urls=[url_input],ssl_verify=False,
-                                                     headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"})
-                    docs=loader.load()
-                    raw_texts = [doc.page_content for doc in docs]
-                    clean_texts = [re.sub(r'\s*\n\s*', ' ', text) for text in raw_texts]
-                    clean_texts = [re.sub(r'\s{2,}', ' ', text).strip() for text in clean_texts]
-                    user_input = "\n".join([text for text in clean_texts])
+                    file_type = uploaded_file.type
+                    if file_type == "text/plain":
+                        user_input = str(uploaded_file.read(), "utf-8")
+                    elif file_type == "application/pdf":
+                        pdfreader = PdfReader(uploaded_file)
+                        user_input = ''
+                        for i, page in enumerate(pdfreader.pages):
+                            content = page.extract_text()
+                            if content:
+                                user_input += content
+                    elif (file_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"):
+                        doc = docx.Document(uploaded_file)
+                        user_input = "\n".join([para.text for para in doc.paragraphs])
             except Exception as e:
-                st.exception(f"Exception:{str(e)[0:500] + '.....'}")
-
-    if user_input:
-        with st.spinner("🔄 Retriever loading..."):
-            embedding_model = HuggingFaceEmbeddings(model_name="BAAI/bge-base-en-v1.5")
-            splitter = RecursiveCharacterTextSplitter(
-                chunk_size=800,
-                chunk_overlap=20,
-                separators=["\n\n", "\n", ".", "!", "?", " ", ""])
-            documents = [Document(page_content=chunk) for chunk in splitter.split_text(user_input)]
-            faiss_db = FAISS.from_documents(documents, embedding_model)
-            dense_retriever = faiss_db.as_retriever(search_type="mmr",  # MMR = Maximal Marginal Relevance for relevance + diversity
-                                            search_kwargs={"k": 3, # number of docs
-                                                           "lambda_mult": 0.7}) # (1.0 = pure relevance, 0.0 = pure diversity)
-            # BM25Retriever is a keyword-based retriever
-            bm25_retriever = BM25Retriever.from_documents(documents)
-            bm25_retriever.k = 3
-            hybrid_retriever = MergerRetriever(retrievers=[dense_retriever, bm25_retriever],
-                                       weights=[0.7, 0.3])
-            st.session_state.context = user_input
-            st.session_state.hybrid_retriever = hybrid_retriever
-            st.session_state.retriever_ready = True
-            st.success(f"Loaded successfully.")
-            st.rerun()
-    # else:
-    #     st.error(f"Please provide your file/url/text.")
+                st.exception(f"Exception:{e}")
+        elif generate_text_input and text_input:
+            user_input = text_input
+        
+        elif generate_url_input and url_input:
+            if not url_input.strip():
+                st.error("Please provide the information to get started")
+            elif not validators.url(url_input):
+                st.error("Please enter a valid Url. It should be a Wiki/website url")
+            else:
+                try:
+                    with st.spinner("🔄 Uploading..."):
+                        if "en.wikipedia.org" in url_input:
+                            query = url_input.split("/")[-1]
+                            loader = WikipediaLoader(query=query, load_max_docs=2)
+                        else:
+                            loader=UnstructuredURLLoader(urls=[url_input],ssl_verify=False,
+                                                         headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"})
+                        docs=loader.load()
+                        raw_texts = [doc.page_content for doc in docs]
+                        clean_texts = [re.sub(r'\s*\n\s*', ' ', text) for text in raw_texts]
+                        clean_texts = [re.sub(r'\s{2,}', ' ', text).strip() for text in clean_texts]
+                        user_input = "\n".join([text for text in clean_texts])
+                except Exception as e:
+                    st.exception(f"Exception:{str(e)[0:500] + '.....'}")
+    
+        if user_input:
+            with st.spinner("🔄 Retriever loading..."):
+                embedding_model = HuggingFaceEmbeddings(model_name="BAAI/bge-base-en-v1.5")
+                splitter = RecursiveCharacterTextSplitter(
+                    chunk_size=800,
+                    chunk_overlap=20,
+                    separators=["\n\n", "\n", ".", "!", "?", " ", ""])
+                documents = [Document(page_content=chunk) for chunk in splitter.split_text(user_input)]
+                faiss_db = FAISS.from_documents(documents, embedding_model)
+                dense_retriever = faiss_db.as_retriever(search_type="mmr",  # MMR = Maximal Marginal Relevance for relevance + diversity
+                                                search_kwargs={"k": 3, # number of docs
+                                                               "lambda_mult": 0.7}) # (1.0 = pure relevance, 0.0 = pure diversity)
+                # BM25Retriever is a keyword-based retriever
+                bm25_retriever = BM25Retriever.from_documents(documents)
+                bm25_retriever.k = 3
+                hybrid_retriever = MergerRetriever(retrievers=[dense_retriever, bm25_retriever],
+                                           weights=[0.7, 0.3])
+                st.session_state.context = user_input
+                st.session_state.hybrid_retriever = hybrid_retriever
+                st.session_state.retriever_ready = True
+                st.success(f"Loaded successfully.")
+                st.rerun()
+        # else:
+        #     st.error(f"Please provide your file/url/text.")
 
 def data_analysis_uploader():
     st.markdown("""
