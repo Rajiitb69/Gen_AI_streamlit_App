@@ -474,16 +474,14 @@ def home_screen():
     <p style="font-size: 17px; line-height: 1.6;">
         Welcome to your <strong>Personal AI Assistant</strong> 👨‍💻, a versatile platform designed to empower users with a suite of intelligent tools that simplify complex tasks across various domains. Whether you are analyzing data, exploring documents, writing code, solving mathematical problems, or summarizing information — this app provides an intuitive, seamless experience tailored to your needs.
     </p>
-    <h2 style="color: #FF6F61;">Key Features:</h2>
+    <h4 style="color: #4CAF50;">Key Features:</h4>
     <ul style="font-size: 17px; line-height: 1.8; padding-left: 20px;">
         <li><strong>📊 Excel Analyzer Bot</strong><br>
             Upload your datasets and interactively analyze them by simply asking questions in natural language. Get meaningful insights without writing a single line of code.
         </li>
-        <br>
         <li><strong>🔎 RAG-based Chatbot</strong><br>
             Upload documents in various formats and engage in intelligent, context-aware conversations. Ask detailed questions about your files and receive precise, AI-driven answers.
         </li>
-        <br>
         <li><strong>💻 Code Assistant</strong><br>
             Get instant help with programming questions across multiple languages. Whether it's debugging, code generation, or understanding complex concepts, your coding companion is here.
         </li>
