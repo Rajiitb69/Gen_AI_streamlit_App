@@ -71,8 +71,15 @@ Your reply style should be:
 """
 code_assistant_title = "🤖 Your Coding Assistant"
 code_assistant_header = """
-    It's a code assistant that provides you with answers to your queries. It helps users with code suggestions,
-    debugging, and explanations across languages like Python, Java, C++, JavaScript, SQL, etc.
+    <div style="padding: 10px; text-align: center;">
+    <h2 style="color: #4CAF50;">🤖 Your Coding Assistant</h2>
+    <p style="font-size: 18px; color: #555;">
+        Welcome to your personal Coding Assistant! <br><br>
+        Get instant help with code suggestions, debugging support, and clear explanations across a wide range of programming languages — including Python, Java, C++, JavaScript, SQL, and more.  
+        <br><br>
+        Simplify your coding journey with AI-powered assistance! 🚀
+    </p>
+</div>
     """
 math_assistant_prompt = """
 You are an expert mathematics tutor helping a user named {username}.
@@ -360,8 +367,8 @@ def get_layout(tool):
     query = st.chat_input(placeholder="Write your query?")
     if "messages" not in st.session_state:
         if tool not in ("📊 Data Analyzer Bot", "🔎 RAG-based Chatbot"):
-            st.title(output_dict['title'])
-            output_dict['header']
+            # st.title(output_dict['title'])
+            st.markdown(output_dict['header'], , unsafe_allow_html=True)
         st.session_state["messages"]=[]
         st.chat_message("assistant").write(output_dict['assistant_content'])
         
