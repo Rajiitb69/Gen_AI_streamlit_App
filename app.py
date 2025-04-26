@@ -467,6 +467,8 @@ def get_layout(tool):
         st.warning("Please type a query to get started.")
 
 # Initialize session state
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
 if 'step' not in st.session_state:
     st.session_state.step = 'login'
 if 'user_name' not in st.session_state:
@@ -481,10 +483,11 @@ with st.sidebar:
             </style>""", unsafe_allow_html=True)
     selected = option_menu(
         menu_title="Main Menu",
-        options=["🏠 Home", "📊 Excel Analyser", "🔎 RAG-based Chatbot", "💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarization", "✉️ Contact Us"],
+        options=["🏠 Home", "📊 Excel Analyser", "🔎 RAG-based Chatbot", "💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarization", "ℹ️ About App", "✉️ Contact Us"],
         menu_icon="cast",
-        default_index=0,
-    )
+        default_index=0,)
+    st.session_state.selected_screen = selected
+    
 
 # Login
 def login_screen():
@@ -533,19 +536,8 @@ def greeting_screen():
         </div>
     """, unsafe_allow_html=True)
 
-    # Nice spacing
-    st.markdown("---")
-    # Select screen
-    selected = st.selectbox("📂 Choose a tool or section:",
-            ["📊 Excel Analyser", "🔎 RAG-based Chatbot", "💻 Code Assistant", "🧮 Math Assistant", "📝 Text Summarization"])
-    
-    st.session_state.selected_screen = selected
-    # Go button
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        if st.button("🚀 Let's Go"):
-            st.session_state.step = 'upload'
-            st.rerun()
+    st.session_state.step = 'upload'
+    st.rerun()
 
 def upload_screen():
     user = st.session_state.user_name.title()
@@ -593,6 +585,8 @@ def main_router():
 
 # App Flow Control
 def run_app():
+    if st.session_state.logged_in:
+        login_screen()
     if st.session_state.step == 'login':
         login_screen()
     elif st.session_state.step == 'greeting':
