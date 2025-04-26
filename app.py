@@ -495,7 +495,10 @@ def home_screen():
     <p style="font-size: 17px; line-height: 1.6;">
         This AI-powered application is crafted to <strong>boost productivity</strong>, <strong>enhance learning</strong>, and <strong>streamline problem-solving</strong> — making powerful technology accessible to everyone. Whether you're a student, a professional, or simply curious, this app is your all-in-one digital assistant ready to help you achieve more with ease.
     </p>
-    <h4><strong>Developed By - </strong>Rajkumar</h4>
+    <br>
+<p style="text-align: center; font-size: 15px; color: gray;">
+    Developed with ❤️ by <strong>Rajkumar</strong>
+</p>
 </div>
     """, unsafe_allow_html=True)
 
