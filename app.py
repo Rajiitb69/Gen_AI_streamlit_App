@@ -454,7 +454,8 @@ def get_layout(tool):
 # Initialize session state
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
-
+if 'step' not in st.session_state:
+    st.session_state.step = 'home'
 if 'user_name' not in st.session_state:
     st.session_state.user_name = ''
 if 'selected_screen' not in st.session_state:
