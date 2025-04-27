@@ -143,6 +143,9 @@ COMMAND GUIDELINES:
 1. If the user asks to **display the result**:
     - Perform the requested operation.
     - Assign the final DataFrame to a variable named `result`.
+    - When displaying an already computed variable, assign it correctly to 'result' without modifying the variable content.
+    - NEVER introduce a typo in the variable name.
+    - ALWAYS double-check and match the variable name exactly as created in previous steps.
 
 2. If the user asks to **plot chart**:
     - Use only Plotly Express for plotting (`import plotly.express as px`).
@@ -460,9 +463,9 @@ def get_layout(tool):
             # Safe execution (use caution in production)
             try:
                 df_numeric = df.copy()
-                df_vars = {'df': df_numeric}
+                local_vars = {'df': df_numeric}
                 dependencies = {'pd': pd, 'px': px, 'np': np, 'scipy': scipy}
-                exec(final_answer, dependencies, df_vars)
+                exec(final_answer, dependencies, local_vars)
                 result = local_vars.get('result', None)
                 fig = local_vars.get("fig", None)
                 if fig and hasattr(fig, 'to_plotly_json'):
