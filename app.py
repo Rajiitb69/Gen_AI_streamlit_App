@@ -173,6 +173,8 @@ RESPONSE FORMAT:
 - Always include clear and concise **inline comments** using `######` to explain each step.
 - Do NOT include any markdown, plain text, or explanations outside the code.
 - Do NOT use backticks or code fences.
+- When writing a function, import any external modules inside the function if they are needed.
+- Do not assume imports from previous cells.
 
 ALWAYS follow the user's latest instructions accurately and without deviation.
 """
