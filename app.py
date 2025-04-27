@@ -144,8 +144,6 @@ COMMAND GUIDELINES:
     - Perform the requested operation.
     - Assign the final DataFrame to a variable named `result`.
     - When displaying an already computed variable, assign it correctly to 'result' without modifying the variable content.
-    - NEVER introduce a typo in the variable name.
-    - ALWAYS double-check and match the variable name exactly as created in previous steps.
 
 2. If the user asks to **plot chart**:
     - Use only Plotly Express for plotting (`import plotly.express as px`).
@@ -175,6 +173,8 @@ RESPONSE FORMAT:
 - Do NOT use backticks or code fences.
 - When writing a function, import any external modules inside the function if they are needed.
 - Do not assume imports from previous cells.
+- Always copy the exact variable name from the previous step without any typo or modification.
+- ALWAYS double-check and match the variable name exactly as created in previous steps.
 
 ALWAYS follow the user's latest instructions accurately and without deviation.
 """
