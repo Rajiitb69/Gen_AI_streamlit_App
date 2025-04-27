@@ -460,9 +460,9 @@ def get_layout(tool):
             # Safe execution (use caution in production)
             try:
                 df_numeric = df.copy()
-                local_vars = {'df': df_numeric, 'pd': pd, 'px': px}
-                global_vars = {'pd': pd, 'px': px, 'np': np}
-                exec(final_answer, global_vars, local_vars)
+                df_vars = {'df': df_numeric}
+                dependencies = {'pd': pd, 'px': px, 'np': np, 'scipy': scipy}
+                exec(final_answer, dependencies, df_vars)
                 result = local_vars.get('result', None)
                 fig = local_vars.get("fig", None)
                 if fig and hasattr(fig, 'to_plotly_json'):
