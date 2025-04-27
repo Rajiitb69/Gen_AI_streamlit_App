@@ -464,7 +464,7 @@ def get_layout(tool):
             try:
                 df_numeric = df.copy()
                 local_vars = {'df': df_numeric}
-                dependencies = {'pd': pd, 'px': px, 'np': np, 'scipy': scipy}
+                dependencies = {'pd': pd, 'np': np, 'px': px, 'scipy': scipy, 'sklearn': sklearn, 'xgb': xgb}
                 exec(final_answer, dependencies, local_vars)
                 result = local_vars.get('result', None)
                 fig = local_vars.get("fig", None)
