@@ -461,7 +461,7 @@ def get_layout(tool):
             try:
                 df_numeric = df.copy()
                 local_vars = {'df': df_numeric, 'pd': pd, 'px': px}
-                global_vars = {'pd': pd, 'px': px, , 'np': np}
+                global_vars = {'pd': pd, 'px': px, 'np': np}
                 exec(final_answer, global_vars, local_vars)
                 result = local_vars.get('result', None)
                 fig = local_vars.get("fig", None)
