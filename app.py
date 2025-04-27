@@ -436,9 +436,9 @@ def get_layout(tool):
             question_answer_chain = create_stuff_documents_chain(llm3, prompt_template)
             chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
         else:
-            llm3 = ChatGroq(model="llama3-70b-8192",
+            llm3 = ChatGroq(model="llama-3.3-70b-versatile",
                            groq_api_key=groq_api_key,
-                            temperature = 0.2,   max_tokens = 700,   
+                            temperature = 0.2,   max_tokens = 1000,   
                             model_kwargs={ "top_p" : 0.5, })
             chain: Runnable = prompt_template | llm3
         
