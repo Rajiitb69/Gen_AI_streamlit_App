@@ -151,13 +151,13 @@ COMMAND GUIDELINES:
     - Use only Plotly Express for plotting (`import plotly.express as px`).
     - Assign the resulting figure to a variable named `fig`.
     - Do NOT use `matplotlib`, `seaborn`, or any other libraries unless the user explicitly asks for it.
-    - NEVER use `fig.show()` or `plt.show()`.
+    - Do NOT use plt.show() or fig.show().
 
 3. If the user asks to **use matplotlib**:
     - Only then can you use `matplotlib.pyplot` and related functions (like `plot_tree`).
-    - Display-related functions like `plt.show()` are still NOT allowed.
-    - Assign the resulting figure to a variable named `fig`.
-    - Still, NEVER use `fig.show()` or `plt.show()`.
+    - Display-related functions like plt.show() are still NOT allowed.
+    - Assign the resulting figure to a variable named `fig` and return the fig as the output.
+    - Do NOT use fig.show() or plt.show().
 
 4. If the user asks to **export file**:
     - Perform the operation and create a new DataFrame if needed.
